@@ -36,8 +36,8 @@ if ($respuestaApi === false) {
     }
 }
 
-// Fechas límite
-$sql = "SELECT tareas.titulo, tareas.fecha_limite, tareas.estado, objetivos.titulo AS titulo_objetivo
+// Tareas con fecha límite
+$sql = "SELECT tareas.id_tarea, tareas.titulo, tareas.fecha_limite, tareas.estado, objetivos.titulo AS titulo_objetivo
         FROM tareas
         INNER JOIN objetivos ON tareas.id_objetivo = objetivos.id_objetivo
         WHERE objetivos.id_usuario = ?
@@ -48,9 +48,9 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute([$idUsuario]);
 $tareasConFecha = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Añadir eventos para FullCalendar
-$eventosCalendario = [];
 
+$eventosCalendario = [];
+// Festivos
 foreach ($festivos as $festivo) {
     if (isset($festivo["date"], $festivo["localName"])) {
         $eventosCalendario[] = [
@@ -62,13 +62,14 @@ foreach ($festivos as $festivo) {
     }
 }
 
-// Convertir tareas con fecha límite en eventos del calendario
+// Tareas
 foreach ($tareasConFecha as $tarea) {
     $eventosCalendario[] = [
         "title" => "Tarea: " . $tarea["titulo"],
         "start" => $tarea["fecha_limite"],
         "allDay" => true,
-        "color" => ($tarea["estado"] === "completada") ? "#198754" : "#0d6efd"
+        "color" => ($tarea["estado"] === "completada") ? "#198754" : "#0d6efd",
+        "url" => "tarea_detalle.php?id_tarea=" . $tarea["id_tarea"]
     ];
 }
 
@@ -169,7 +170,7 @@ foreach ($tareasConFecha as $tarea) {
 
         const calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: "dayGridMonth",
-            initialDate: "<?php echo htmlspecialchars($anio); ?>-01-01",
+            initialDate: "<?php echo ($anio == date('Y')) ? date('Y-m-d') : htmlspecialchars($anio) . '-01-01'; ?>",
             locale: "es",
             height: "auto",
             firstDay: 1,
@@ -183,7 +184,7 @@ foreach ($tareasConFecha as $tarea) {
 
         calendar.render();
     });
-    
+
 </script>
 </body>
 
