@@ -114,11 +114,6 @@ $objetivo = $stmt->fetch(PDO::FETCH_ASSOC);
 
     <p><?php echo nl2br(htmlspecialchars($objetivo["descripcion"])); ?></p>
     
-    <form action="" method="POST">
-        <button type="submit" name="cambiar_estado">
-        Cambiar_estado
-        </button>
-    </form>
 
     <hr>
 
@@ -168,14 +163,14 @@ $objetivo = $stmt->fetch(PDO::FETCH_ASSOC);
     <h2>Tareas del objetivo</h2>
 
     <p>
-        Aquí se mostrarán las tareas asociadas a este objetivos.
-        En el siguiente bloque añadiremos la creación y listado de tareas.
+        Desde esta sección puedes acceder a la gestión de tareas del objetivo.
+        Allí podrás crear tareas, completarlas, eliminarlas o entrar en una tarea concreta.
     </p>
 
     <p>
         
         <a href="tareas.php?id_objetivo=<?php echo $objetivo["id_objetivo"]; ?>">
-        Gestionar tareas de este objetivo
+        Ver y crear tareas de este objetivo
         </a>
     
     </p>
