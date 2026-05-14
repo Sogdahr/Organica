@@ -65,7 +65,7 @@ $minutosRestantesObjetivo = $totalMinutosObjetivo % 60;
     if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["actualizar_objetivo"])) {
 
         $titulo = trim($_POST["titulo"]);
-        $descripción = trim($_POST["descripcion"]);
+        $descripcion = trim($_POST["descripcion"]);
         $estado = $_POST["estado"];
 
         if (empty($titulo)) {
@@ -84,7 +84,7 @@ $minutosRestantesObjetivo = $totalMinutosObjetivo % 60;
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$titulo, $descripción, $estado, $idObjetivo, $idUsuario]);
 
-            header("Location: objetivo_detalle.php?id_objetivo" . $idObjetivo);
+            header("Location: objetivo_detalle.php?id_objetivo=" . $idObjetivo);
             exit;
 
         }
@@ -131,7 +131,7 @@ $minutosRestantesObjetivo = $totalMinutosObjetivo % 60;
 
     <nav>
         <a href="objetivos.php">Volver a mis objetivos</a>
-        <a href="dasboard.php">Panel principal</a>
+        <a href="dashboard.php">Panel principal</a>
         <a href="logout.php">Cerrar sesión</a>
     </nav>
 

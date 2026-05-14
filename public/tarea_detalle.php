@@ -15,6 +15,10 @@ require_once "../app/config/database.php";
 $idUsuario = $_SESSION["id_usuario"];
 $idTarea = $_GET["id_tarea"];
 $mensaje = "";
+$mensajeTarea = "";
+$mensajeSubtarea = "";
+$mensajeNota = "";
+$mensajePomodoro = "";
 
 // Obtener tarea y comprobación de seguridad
 $sql = "SELECT tareas.*, objetivos.id_usuario, objetivos.titulo AS titulo_objetivo
@@ -38,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["crear_subtarea"])) {
     $tituloSubtarea = trim($_POST["titulo_subtarea"]);
 
     if (empty($tituloSubtarea)) {
-        $mensaje = "El título de la subtarea no puede estar vacío.";
+        $mensajeSubtarea = "El título de la subtarea no puede estar vacío.";
     } else {
         $sql = "INSERT INTO subtareas (id_tarea, titulo)
                 VALUES (?, ?)";
@@ -55,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["crear_nota"])) {
     $contenidoNota = trim($_POST["contenido_nota"]);
 
     if (empty($contenidoNota)) {
-        $mensaje = "El contenido de la nota no puede estar vacío.";
+        $mensajeNota = "El contenido de la nota no puede estar vacío.";
     } else {
         $sql = "INSERT INTO notas (id_tarea, id_usuario, contenido)
                 VALUES (?, ?, ?)";
@@ -72,14 +76,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["guardar_pomodoro"])) 
     $duracionPomodoro = $_POST["duracion_pomodoro"];
 
     if (!is_numeric($duracionPomodoro) || $duracionPomodoro <= 0) {
-        $mensaje = "La duración del Pomodoro no es válida.";
+        $mensajePomodoro = "Debes iniciar el Pomodoro antes de guardar una sesión.";
     } else {
         $sql = "INSERT INTO sesiones_pomodoro (id_tarea, id_usuario, duracion_minutos, completada)
                 VALUES (?, ?, ?, ?)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$idTarea, $idUsuario, $duracionPomodoro, 1]);
 
-        header("Location: tarea_detalle.php?id_tarea=" . $idTarea);
+        header("Location: tarea_detalle.php?id_tarea=" . $idTarea . "#pomodoro");
         exit;
     }
 }
@@ -259,7 +263,7 @@ $sesionesPomodoro = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <h2>Editar tarea</h2>
 
     <?php if (!empty($mensaje)): ?>
-        <p style="color: red;"><?php echo htmlspecialchars($mensaje); ?></p>
+        <p style="color: red;"><?php echo htmlspecialchars($mensajeSubtarea); ?></p>
     <?php endif; ?>
 
     <form method="POST" action="">
@@ -321,6 +325,10 @@ $sesionesPomodoro = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <h2>Subtareas</h2>
 
+    <?php if (!empty($mensajeSubtarea)): ?>
+        <p style="color: red;"><?php echo htmlspecialchars($mensajeSubtarea); ?></p>
+    <?php endif; ?>
+
 <form method="POST" action="">
     <label for="titulo_subtarea">Nueva subtarea:</label><br>
     <input type="text" id="titulo_subtarea" name="titulo_subtarea">
@@ -365,6 +373,10 @@ $sesionesPomodoro = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <?php endif; ?>
 
     <h2>Notas</h2>
+
+    <?php if (!empty($mensajeNota)): ?>
+        <p style="color: red;"><?php echo htmlspecialchars($mensajeNota); ?></p>
+    <?php endif; ?>
 
 <form method="POST" action="">
     <label for="contenido_nota">Nueva nota:</label><br>
@@ -414,7 +426,13 @@ $sesionesPomodoro = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <?php endif; ?>
 
-    <h2>Pomodoro</h2>
+    <h2 id="pomodoro">Pomodoro</h2>
+
+    <?php if (!empty($mensajePomodoro)): ?>
+        <p style="color: red;"><?php echo htmlspecialchars($mensajePomodoro); ?></p>
+    <?php endif; ?>
+
+
     <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px;">
     <p id="pantalla-tiempo" style="font-size: 32px; font-weight: bold;">
         25:00
@@ -424,8 +442,8 @@ $sesionesPomodoro = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <button type="button" id="btn-pausar">Pausar</button>
     <button type="button" id="btn-reiniciar">Reiniciar</button>
 
-    <form method="POST" action="" style="margin-top: 15px;">
-        <input type="hidden" id="duracion_pomodoro" name="duracion_pomodoro" value="25">
+    <form method="POST" action="" id="form_pomodoro" style="margin-top: 15px;">
+        <input type="hidden" id="duracion_pomodoro" name="duracion_pomodoro" value="0">
 
         <button type="submit" name="guardar_pomodoro">
             Guardar sesión Pomodoro

@@ -14,7 +14,12 @@ require_once "../app/config/database.php";
 
 $idUsuario = $_SESSION["id_usuario"];
 $idObjetivo = $_GET["id_objetivo"];
-$mensaje = "";
+
+// Mensajes 
+$mensajeTarea = "";
+$mensajeSubtarea = "";
+$mensajeNota = "";
+$mensajePomodoro = "";
 
 // Comprobar que el objetivo pretenece al usuario conectado
     $sql = "SELECT * FROM objetivos WHERE id_objetivo = ? AND id_usuario = ?";
@@ -36,9 +41,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["crear_tarea"])) {
     $prioridad = $_POST["prioridad"];
 
         if (empty($titulo)) {
-            $mensaje = "El titulo de la tarea es obligatorio.";
+            $mensajeTarea = "El titulo de la tarea es obligatorio.";
         } elseif ($prioridad !== "baja" && $prioridad !== "media" && $prioridad !== "alta"){
-            $mensaje = "La prioridad seleccionada no es válida";
+            $mensajeTarea = "La prioridad seleccionada no es válida";
         } else {
             if (empty($fechaLimite)) {
                 $fechaLimite = null;

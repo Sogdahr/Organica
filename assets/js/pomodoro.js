@@ -1,5 +1,6 @@
-let tiempoRestante = 25 * 60;
-let intervale = null;
+let duracionInicial = 25 * 60;
+let tiempoRestante = duracionInicial;
+let intervalo = null;
 let enMarcha = false;
 
 const pantallaTiempo = document.getElementById("pantalla-tiempo");
@@ -7,6 +8,7 @@ const btnIniciar = document.getElementById("btn-iniciar");
 const btnPausar = document.getElementById("btn-pausar");
 const btnReiniciar = document.getElementById("btn-reiniciar");
 const inputDuracion = document.getElementById("duracion_pomodoro");
+const formPomodoro = document.getElementById("form_pomodoro");
 
 function actualizarPantalla() {
     const minutos = Math.floor(tiempoRestante / 60);
@@ -28,6 +30,7 @@ function iniciarPomodoro() {
         if (tiempoRestante > 0) {
             tiempoRestante--;
             actualizarPantalla();
+            actualizarDuracionTrabajada();
         } else {
             clearInterval(intervalo);
             enMarcha = false;
@@ -43,13 +46,28 @@ function pausarPomodoro () {
 
 function reiniciarPomodoro () {
     clearInterval(intervalo);
-    tiempoRestante = 25 * 60;
+    tiempoRestante = duracionInicial;
     enMarcha = false;
+    inputDuracion.value = 0;
     actualizarPantalla();
 }
+
+function actualizarDuracionTrabajada() {
+    const segundosTrabajados = duracionInicial - tiempoRestante;
+    const minutosTrabajados = Math.ceil(segundosTrabajados / 60);
+
+    inputDuracion.value = minutosTrabajados;
+}
+
 
 btnIniciar.addEventListener("click", iniciarPomodoro);
 btnPausar.addEventListener("click", pausarPomodoro);
 btnReiniciar.addEventListener("click", reiniciarPomodoro);
 
+
+formPomodoro.addEventListener("submit", function() {
+    actualizarDuracionTrabajada();
+});
+
+inputDuracion.value = 0;
 actualizarPantalla();
