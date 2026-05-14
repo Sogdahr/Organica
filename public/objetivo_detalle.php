@@ -61,6 +61,15 @@ $totalMinutosObjetivo = $datosPomodoroObjetivo["total_minutos"];
 $horasObjetivo = floor($totalMinutosObjetivo / 60);
 $minutosRestantesObjetivo = $totalMinutosObjetivo % 60;
 
+// Obtener tareas del objetivo para mostrarlas en el detalle
+$sql = "SELECT id_tarea, titulo, fecha_limite, prioridad, estado
+        FROM tareas
+        WHERE id_objetivo = ?
+        ORDER BY fecha_creacion DESC";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$idObjetivo]);
+$tareasObjetivo = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 // Actualizar objetivo
     if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["actualizar_objetivo"])) {
 
@@ -207,22 +216,59 @@ $minutosRestantesObjetivo = $totalMinutosObjetivo % 60;
 
     <h2>Tareas del objetivo</h2>
 
-    <p>
-        Desde esta sección puedes acceder a la gestión de tareas del objetivo.
-        Allí podrás crear tareas, completarlas, eliminarlas o entrar en una tarea concreta.
-    </p>
+<?php if (empty($tareasObjetivo)): ?>
 
-    <p>
-        
-        <a href="tareas.php?id_objetivo=<?php echo $objetivo["id_objetivo"]; ?>">
-        Ver y crear tareas de este objetivo
-        </a>
-    
-    </p>
+    <p>Este objetivo todavía no tiene tareas creadas.</p>
+
+<?php else: ?>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+
+        <?php foreach ($tareasObjetivo as $tarea): ?>
+
+            <div style="border: 1px solid #ccc; padding: 12px; width: 250px;">
+
+                <h3><?php echo htmlspecialchars($tarea["titulo"]); ?></h3>
+
+                <p>
+                    <strong>Estado:</strong>
+                    <?php echo htmlspecialchars($tarea["estado"]); ?>
+                </p>
+
+                <p>
+                    <strong>Prioridad:</strong>
+                    <?php echo htmlspecialchars($tarea["prioridad"]); ?>
+                </p>
+
+                <p>
+                    <strong>Fecha límite:</strong>
+                    <?php echo htmlspecialchars($tarea["fecha_limite"] ?? "Sin fecha"); ?>
+                </p>
+
+                <p>
+                    <a href="tarea_detalle.php?id_tarea=<?php echo $tarea["id_tarea"]; ?>">
+                        Entrar a la tarea
+                    </a>
+                </p>
+
+            </div>
+
+        <?php endforeach; ?>
+
+    </div>
+
+<?php endif; ?>
+
+<p>
+    <a href="tareas.php?id_objetivo=<?php echo $objetivo["id_objetivo"]; ?>">
+        Crear o gestionar tareas
+    </a>
+</p>
 
     <hr>
 
-    <h2>Zona peligrosa</h2>
+    <h2>Eliminar objetivo</h2>
+    <p>Esta acción eliminará el objetivo y todas sus tareas asociadas.</p>
 
     <form method="POST" action="" onsubmit="return confirm('¿Seguro que quieres eliminar este objetivo? También se eliminarán sus tareas asociadas.');">
         <button type="submit" name="eliminar_objetivo">
