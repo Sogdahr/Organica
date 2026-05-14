@@ -67,6 +67,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["crear_nota"])) {
     }
 }
 
+// Guardar sesión Pomodoro
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["guardar_pomodoro"])) {
+    $duracionPomodoro = $_POST["duracion_pomodoro"];
+
+    if (!is_numeric($duracionPomodoro) || $duracionPomodoro <= 0) {
+        $mensaje = "La duración del Pomodoro no es válida.";
+    } else {
+        $sql = "INSERT INTO sesiones_pomodoro (id_tarea, id_usuario, duracion_minutos, completada)
+                VALUES (?, ?, ?, ?)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$idTarea, $idUsuario, $duracionPomodoro, 1]);
+
+        header("Location: tarea_detalle.php?id_tarea=" . $idTarea);
+        exit;
+    }
+}
+
 
 // Cambiar estado de subtarea
 if (isset($_GET["cambiar_subtarea"])) {
@@ -179,6 +196,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["eliminar_tarea"])) {
     $stmt->execute([$idTarea, $idUsuario]);
     $notas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+// Obtener sesiones Pomodoro de la tarea
+$sql = "SELECT * FROM sesiones_pomodoro 
+        WHERE id_tarea = ? AND id_usuario = ?
+        ORDER BY fecha_inicio DESC";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$idTarea, $idUsuario]);
+$sesionesPomodoro = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -391,7 +415,43 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["eliminar_tarea"])) {
 <?php endif; ?>
 
     <h2>Pomodoro</h2>
-    <p>En un bloque posterior se añadirá el temporizador Pomodoro asociado a esta tarea.</p>
+    <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px;">
+    <p id="pantalla-tiempo" style="font-size: 32px; font-weight: bold;">
+        25:00
+    </p>
+
+    <button type="button" id="btn-iniciar">Iniciar</button>
+    <button type="button" id="btn-pausar">Pausar</button>
+    <button type="button" id="btn-reiniciar">Reiniciar</button>
+
+    <form method="POST" action="" style="margin-top: 15px;">
+        <input type="hidden" id="duracion_pomodoro" name="duracion_pomodoro" value="25">
+
+        <button type="submit" name="guardar_pomodoro">
+            Guardar sesión Pomodoro
+        </button>
+    </form>
+</div>
+
+<h3>Sesiones Pomodoro registradas</h3>
+
+<?php if (empty($sesionesPomodoro)): ?>
+
+    <p>Todavía no hay sesiones Pomodoro registradas para esta tarea.</p>
+
+<?php else: ?>
+
+    <ul>
+        <?php foreach ($sesionesPomodoro as $sesion): ?>
+            <li>
+                <?php echo htmlspecialchars($sesion["duracion_minutos"]); ?> minutos
+                -
+                <?php echo htmlspecialchars($sesion["fecha_inicio"]); ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+
+<?php endif; ?>
 
     <hr>
 
@@ -403,6 +463,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["eliminar_tarea"])) {
         </button>
     </form>
 
+    <script src="../assets/js/pomodoro.js"></script>
 </body>
 
 </html>
