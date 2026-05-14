@@ -33,6 +33,61 @@ $tarea = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $idObjetivo = $tarea["id_objetivo"];
 
+// Crear subtarea
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["crear_subtarea"])) {
+    $tituloSubtarea = trim($_POST["titulo_subtarea"]);
+
+    if (empty($tituloSubtarea)) {
+        $mensaje = "El título de la subtarea no puede estar vacío.";
+    } else {
+        $sql = "INSERT INTO subtareas (id_tarea, titulo)
+                VALUES (?, ?)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$idTarea, $tituloSubtarea]);
+
+        header("Location: tarea_detalle.php?id_tarea=" . $idTarea);
+        exit;
+    }
+}
+
+// Cambiar estado de subtarea
+if (isset($_GET["cambiar_subtarea"])) {
+    $idSubtarea = $_GET["cambiar_subtarea"];
+
+    $sql = "SELECT * FROM subtareas 
+            WHERE id_subtarea = ? AND id_tarea = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$idSubtarea, $idTarea]);
+    $subtarea = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($subtarea) {
+        $nuevoEstado = ($subtarea["estado"] === "pendiente") ? "completada" : "pendiente";
+
+        $sql = "UPDATE subtareas 
+                SET estado = ? 
+                WHERE id_subtarea = ? AND id_tarea = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$nuevoEstado, $idSubtarea, $idTarea]);
+    }
+
+    header("Location: tarea_detalle.php?id_tarea=" . $idTarea);
+    exit;
+}
+
+
+// Eliminar subtarea
+if (isset($_GET["eliminar_subtarea"])) {
+    $idSubtarea = $_GET["eliminar_subtarea"];
+
+    $sql = "DELETE FROM subtareas 
+            WHERE id_subtarea = ? AND id_tarea = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$idSubtarea, $idTarea]);
+
+    header("Location: tarea_detalle.php?id_tarea=" . $idTarea);
+    exit;
+}
+
 // Actualizar tarea
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["actualizar_tarea"])) {
     $titulo = trim($_POST["titulo"]);
@@ -75,6 +130,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["eliminar_tarea"])) {
     header("Location: tareas.php?id_objetivo=" . $idObjetivo);
     exit;
 }
+
+
+// Obtener subtareas de la tarea
+    $sql = "SELECT * FROM subtareas 
+            WHERE id_tarea = ? 
+    ORDER BY id_subtarea ASC";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$idTarea]);
+    $subtareas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 
 ?>
 
@@ -192,7 +257,49 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["eliminar_tarea"])) {
     <hr>
 
     <h2>Subtareas</h2>
-    <p>En el siguiente bloque se podrán añadir subtareas a esta tarea.</p>
+
+<form method="POST" action="">
+    <label for="titulo_subtarea">Nueva subtarea:</label><br>
+    <input type="text" id="titulo_subtarea" name="titulo_subtarea">
+
+    <button type="submit" name="crear_subtarea">
+        Añadir subtarea
+    </button>
+</form>
+
+<br>
+
+<?php if (empty($subtareas)): ?>
+
+    <p>Esta tarea todavía no tiene subtareas.</p>
+
+<?php else: ?>
+
+    <ul>
+        <?php foreach ($subtareas as $subtarea): ?>
+
+            <li>
+                <?php echo htmlspecialchars($subtarea["titulo"]); ?>
+
+                - Estado:
+                <strong><?php echo htmlspecialchars($subtarea["estado"]); ?></strong>
+
+                |
+                <a href="tarea_detalle.php?id_tarea=<?php echo $idTarea; ?>&cambiar_subtarea=<?php echo $subtarea["id_subtarea"]; ?>">
+                    Cambiar estado
+                </a>
+
+                |
+                <a href="tarea_detalle.php?id_tarea=<?php echo $idTarea; ?>&eliminar_subtarea=<?php echo $subtarea["id_subtarea"]; ?>"
+                   onclick="return confirm('¿Seguro que quieres eliminar esta subtarea?');">
+                    Eliminar
+                </a>
+            </li>
+
+        <?php endforeach; ?>
+    </ul>
+
+<?php endif; ?>
 
     <h2>Notas</h2>
     <p>En un bloque posterior se podrán añadir notas internas a esta tarea.</p>
