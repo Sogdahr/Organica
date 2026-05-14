@@ -91,20 +91,6 @@ $minutosRestantesObjetivo = $totalMinutosObjetivo % 60;
     }
 
 
-// Cambiar estado del objetivo
-/*    if (isset($_POST["cambiar_estado"])) {
-
-        $sql = "UPDATE objetivos
-                SET estado = ?
-                WHERE id_objetivo = ? AND id_usuario = ?";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([$nuevoEstado, $idObjetivo, $idUsuario]);
-
-        header("Location: objetivo_detalle.php?id_objetivo=" . $idObjetivo);
-        exit;
-    }
-*/
-
 // Eliminar objetivo
     if (isset($_POST["eliminar_objetivo"])) {
 

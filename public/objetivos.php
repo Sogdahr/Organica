@@ -56,7 +56,9 @@ $objetivos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <nav>
 
     <a href="dashboard.php">Panel principal</a>
+    <a href="calendario.php">Calendario</a>
     <a href="logout.php">Cerrar sesión</a>
+    
     </nav>
 
     <hr>
