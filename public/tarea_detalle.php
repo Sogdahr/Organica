@@ -50,6 +50,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["crear_subtarea"])) {
     }
 }
 
+// Crear nota
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["crear_nota"])) {
+    $contenidoNota = trim($_POST["contenido_nota"]);
+
+    if (empty($contenidoNota)) {
+        $mensaje = "El contenido de la nota no puede estar vacío.";
+    } else {
+        $sql = "INSERT INTO notas (id_tarea, id_usuario, contenido)
+                VALUES (?, ?, ?)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$idTarea, $idUsuario, $contenidoNota]);
+
+        header("Location: tarea_detalle.php?id_tarea=" . $idTarea);
+        exit;
+    }
+}
+
+
 // Cambiar estado de subtarea
 if (isset($_GET["cambiar_subtarea"])) {
     $idSubtarea = $_GET["cambiar_subtarea"];
@@ -83,6 +101,19 @@ if (isset($_GET["eliminar_subtarea"])) {
             WHERE id_subtarea = ? AND id_tarea = ?";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$idSubtarea, $idTarea]);
+
+    header("Location: tarea_detalle.php?id_tarea=" . $idTarea);
+    exit;
+}
+
+// Eliminar nota
+if (isset($_GET["eliminar_nota"])) {
+    $idNota = $_GET["eliminar_nota"];
+
+    $sql = "DELETE FROM notas 
+            WHERE id_nota = ? AND id_tarea = ? AND id_usuario = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$idNota, $idTarea, $idUsuario]);
 
     header("Location: tarea_detalle.php?id_tarea=" . $idTarea);
     exit;
@@ -139,6 +170,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["eliminar_tarea"])) {
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$idTarea]);
     $subtareas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Obtener notas de la tarea
+    $sql = "SELECT * FROM notas 
+        WHERE id_tarea = ? AND id_usuario = ?
+        ORDER BY fecha_creacion DESC";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$idTarea, $idUsuario]);
+    $notas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 ?>
@@ -302,7 +341,54 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["eliminar_tarea"])) {
 <?php endif; ?>
 
     <h2>Notas</h2>
-    <p>En un bloque posterior se podrán añadir notas internas a esta tarea.</p>
+
+<form method="POST" action="">
+    <label for="contenido_nota">Nueva nota:</label><br>
+    <textarea 
+        id="contenido_nota" 
+        name="contenido_nota" 
+        rows="3" 
+        cols="50"
+    ></textarea><br><br>
+
+    <button type="submit" name="crear_nota">
+        Añadir nota
+    </button>
+</form>
+
+<br>
+
+<?php if (empty($notas)): ?>
+
+    <p>Esta tarea todavía no tiene notas.</p>
+
+<?php else: ?>
+
+    <?php foreach ($notas as $nota): ?>
+
+        <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+
+            <p>
+                <?php echo nl2br(htmlspecialchars($nota["contenido"])); ?>
+            </p>
+
+            <small>
+                Creada el:
+                <?php echo htmlspecialchars($nota["fecha_creacion"]); ?>
+            </small>
+
+            <p>
+                <a href="tarea_detalle.php?id_tarea=<?php echo $idTarea; ?>&eliminar_nota=<?php echo $nota["id_nota"]; ?>"
+                   onclick="return confirm('¿Seguro que quieres eliminar esta nota?');">
+                    Eliminar nota
+                </a>
+            </p>
+
+        </div>
+
+    <?php endforeach; ?>
+
+<?php endif; ?>
 
     <h2>Pomodoro</h2>
     <p>En un bloque posterior se añadirá el temporizador Pomodoro asociado a esta tarea.</p>
