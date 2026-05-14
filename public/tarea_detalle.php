@@ -14,7 +14,7 @@ require_once "../app/config/database.php";
 
 $idUsuario = $_SESSION["id_usuario"];
 $idTarea = $_GET["id_tarea"];
-$mensaje = "";
+
 $mensajeTarea = "";
 $mensajeSubtarea = "";
 $mensajeNota = "";
@@ -149,11 +149,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["actualizar_tarea"])) 
     $estado = $_POST["estado"];
 
     if (empty($titulo)) {
-        $mensaje = "El título de la tarea no puede estar vacío.";
+        $mensajeTarea = "El título de la tarea no puede estar vacío.";
     } elseif ($prioridad !== "baja" && $prioridad !== "media" && $prioridad !== "alta") {
-        $mensaje = "La prioridad seleccionada no es válida.";
+        $mensajeTarea = "La prioridad seleccionada no es válida.";
     } elseif ($estado !== "pendiente" && $estado !== "completada") {
-        $mensaje = "El estado seleccionado no es válido.";
+        $mensajeTarea = "El estado seleccionado no es válido.";
     } else {
         if (empty($fechaLimite)) {
             $fechaLimite = null;
@@ -223,11 +223,14 @@ $sesionesPomodoro = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
 
     <nav>
-        <a href="tareas.php?id_objetivo=<?php echo $idObjetivo; ?>">Volver a tareas</a> |
-        <a href="objetivo_detalle.php?id_objetivo=<?php echo $idObjetivo; ?>">Volver al objetivo</a> |
-        <a href="objetivos.php">Mis objetivos</a> |
+        <nav>
         <a href="dashboard.php">Panel principal</a> |
+        <a href="objetivos.php">Mis objetivos</a> |
+        <a href="calendario.php">Calendario</a> |
+        <a href="estadisticas.php">Estadísticas</a> |
+        <a href="tareas.php?id_objetivo=<?php echo $idObjetivo; ?>">Volver a tareas</a> |
         <a href="logout.php">Cerrar sesión</a>
+</nav>
     </nav>
 
     <hr>
@@ -262,8 +265,8 @@ $sesionesPomodoro = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <h2>Editar tarea</h2>
 
-    <?php if (!empty($mensaje)): ?>
-        <p style="color: red;"><?php echo htmlspecialchars($mensajeSubtarea); ?></p>
+    <?php if (!empty($mensajeTarea)): ?>
+        <p style="color: red;"><?php echo htmlspecialchars($mensajeTarea); ?></p>
     <?php endif; ?>
 
     <form method="POST" action="">

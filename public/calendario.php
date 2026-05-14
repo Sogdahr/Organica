@@ -90,6 +90,7 @@ foreach ($tareasConFecha as $tarea) {
     <nav>
         <a href="dashboard.php">Panel principal</a> |
         <a href="objetivos.php">Mis objetivos</a> |
+        <a href="calendario.php">Calendario</a> |
         <a href="estadisticas.php">Estadísticas</a> |
         <a href="logout.php">Cerrar sesión</a>
     </nav>

@@ -17,9 +17,6 @@ $idObjetivo = $_GET["id_objetivo"];
 
 // Mensajes 
 $mensajeTarea = "";
-$mensajeSubtarea = "";
-$mensajeNota = "";
-$mensajePomodoro = "";
 
 // Comprobar que el objetivo pretenece al usuario conectado
     $sql = "SELECT * FROM objetivos WHERE id_objetivo = ? AND id_usuario = ?";
@@ -41,9 +38,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["crear_tarea"])) {
     $prioridad = $_POST["prioridad"];
 
         if (empty($titulo)) {
-            $mensajeTarea = "El titulo de la tarea es obligatorio.";
+            $mensajeTarea = "El título de la tarea es obligatorio.";
         } elseif ($prioridad !== "baja" && $prioridad !== "media" && $prioridad !== "alta"){
-            $mensajeTarea = "La prioridad seleccionada no es válida";
+            $mensajeTarea = "La prioridad seleccionada no es válida.";
         } else {
             if (empty($fechaLimite)) {
                 $fechaLimite = null;
@@ -118,10 +115,14 @@ if (isset($_GET["eliminar"])) {
 <body>
 
     <nav>
-        <a href="objetivo_detalle.php?id_objetivo=<?php echo $idObjetivo; ?>">Volver al objetivo</a> |
-        <a href="objetivos.php">Mis objetivos</a> |
+        <nav>
         <a href="dashboard.php">Panel principal</a> |
+        <a href="objetivos.php">Mis objetivos</a> |
+        <a href="calendario.php">Calendario</a> |
+        <a href="estadisticas.php">Estadísticas</a> |
+        <a href="objetivo_detalle.php?id_objetivo=<?php echo $idObjetivo; ?>">Volver al objetivo</a> |
         <a href="logout.php">Cerrar sesión</a>
+</nav>
     </nav>
 
     <hr>
@@ -138,8 +139,8 @@ if (isset($_GET["eliminar"])) {
 
     <h2>Crear nueva tarea</h2>
 
-    <?php if (!empty($mensaje)): ?>
-        <p style="color: red;"><?php echo htmlspecialchars($mensaje); ?></p>
+    <?php if (!empty($mensajeTarea)): ?>
+        <p style="color: red;"><?php echo htmlspecialchars($mensajeTarea); ?></p>
     <?php endif; ?>
 
     <form method="POST" action="">

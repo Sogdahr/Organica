@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <h1>Crear cuenta</h1>
 
     <?php if (!empty($mensaje)): ?>
-        <p style="color: red;"><?php echo $mensaje; ?></p>
+        <p style="color: red;"><?php echo htmlspecialchars($mensaje); ?></p>
     <?php endif; ?>
 
     <form method="POST" action="">
@@ -78,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     </form>
 
-    <p>¿Tienes ya una cuenta creada? <a href="login.php"></a></p>
+    <p>¿Tienes ya una cuenta creada? <a href="login.php"></a>Inicia sesión</p>
     
 </body>
 </html>

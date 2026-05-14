@@ -10,7 +10,7 @@ if (!isset($_SESSION["id_usuario"])) {
 $idUsuario = $_SESSION["id_usuario"];
 $mensaje = "";
 
-// Crear nuevo objetivos
+// Crear nuevo objetivo
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["crear_objetivo"])) {
 
     $titulo = trim($_POST["titulo"]);
@@ -55,9 +55,12 @@ $objetivos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <nav>
 
-    <a href="dashboard.php">Panel principal</a>
-    <a href="calendario.php">Calendario</a>
-    <a href="logout.php">Cerrar sesión</a>
+    <nav>
+        <a href="dashboard.php">Panel principal</a> |
+        <a href="calendario.php">Calendario</a> |
+        <a href="estadisticas.php">Estadísticas</a> |
+        <a href="logout.php">Cerrar sesión</a>
+    </nav>
     
     </nav>
 
@@ -89,7 +92,7 @@ $objetivos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <?php if (empty($objetivos)): ?>
         
-        <p>Todavía no tienes objetibvos creados</p>
+        <p>Todavía no tienes objetibvos creados.</p>
 
     <?php else: ?>
 

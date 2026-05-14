@@ -58,7 +58,7 @@ $minutosRestantes = $minutosPomodoro % 60;
 
         <a href="objetivos.php">Mis objetivos</a> |
         <a href="calendario.php">Calendario</a> |
-        <a href="estadisticas.php">Estadisticas</a> |
+        <a href="estadisticas.php">Estadísticas</a> |
         <a href="logout.php">Cerrar sesión</a>
 
     </nav>

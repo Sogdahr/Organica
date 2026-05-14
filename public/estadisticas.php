@@ -104,12 +104,13 @@ if ($totalSubtareas > 0) {
 
 <body>
 
-    <nav>
-        <a href="dashboard.php">Panel principal</a> |
-        <a href="objetivos.php">Mis objetivos</a> |
-        <a href="logout.php">Cerrar sesión</a>
-    </nav>
-
+        <nav>
+            <a href="dashboard.php">Panel principal</a> |
+            <a href="objetivos.php">Mis objetivos</a> |
+            <a href="calendario.php">Calendario</a> |
+            <a href="logout.php">Cerrar sesión</a>
+        </nav>
+    
     <hr>
 
     <h1>Estadísticas personales</h1>

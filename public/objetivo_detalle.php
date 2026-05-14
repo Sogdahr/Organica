@@ -82,7 +82,7 @@ $minutosRestantesObjetivo = $totalMinutosObjetivo % 60;
             SET titulo = ?, descripcion = ?, estado = ?
             WHERE id_objetivo = ? AND id_usuario = ?";
             $stmt = $pdo->prepare($sql);
-            $stmt->execute([$titulo, $descripción, $estado, $idObjetivo, $idUsuario]);
+            $stmt->execute([$titulo, $descripcion, $estado, $idObjetivo, $idUsuario]);
 
             header("Location: objetivo_detalle.php?id_objetivo=" . $idObjetivo);
             exit;
@@ -116,8 +116,10 @@ $minutosRestantesObjetivo = $totalMinutosObjetivo % 60;
 <body>
 
     <nav>
-        <a href="objetivos.php">Volver a mis objetivos</a>
         <a href="dashboard.php">Panel principal</a>
+        <a href="objetivos.php">Mis objetivos</a>
+        <a href="calendario.php">Calendario</a>
+        <a href="estadisticas.php">Estadísticas</a>
         <a href="logout.php">Cerrar sesión</a>
     </nav>
 
@@ -138,7 +140,7 @@ $minutosRestantesObjetivo = $totalMinutosObjetivo % 60;
     <h2>Editar objetivo</h2>
 
     <?php if (!empty($mensaje)): ?>
-        <p stlye="color: red;"><?php echo htmlspecialchars($mensaje); ?></p>
+        <p style="color: red;"><?php echo htmlspecialchars($mensaje); ?></p>
     <?php endif; ?>
 
     <form action="" method="POST">

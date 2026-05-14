@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <?php endif; ?>
 
     <?php if (!empty($mensaje)): ?>
-        <p style="color: red;"><?php echo $mensaje; ?></p>
+        <p style="color: red;"><?php echo htmlspecialchars($mensaje); ?></p>
     <?php endif; ?>
 
     <form method="POST" action="">
@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     </form>
 
-    <p>¿No tienes cuenta <a href="registro.php">Crear cuenta</a></p>
+    <p>¿No tienes cuenta? <a href="registro.php">Crear cuenta</a></p>
     <p><a href="index.php">Volver a la página principal</a></p>
     
 </body>
