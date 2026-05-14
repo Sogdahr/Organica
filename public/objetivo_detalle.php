@@ -29,6 +29,38 @@ $objetivo = $stmt->fetch(PDO::FETCH_ASSOC);
         exit;
     }
 
+// Contar tareas del objetivo
+$sql = "SELECT COUNT(*) AS total_tareas
+        FROM tareas
+        WHERE id_objetivo = ?";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$idObjetivo]);
+$totalTareasObjetivo = $stmt->fetch(PDO::FETCH_ASSOC)["total_tareas"];
+
+// Contar tareas completadas del objetivo
+$sql = "SELECT COUNT(*) AS tareas_completadas
+        FROM tareas
+        WHERE id_objetivo = ? AND estado = 'completada'";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$idObjetivo]);
+$tareasCompletadasObjetivo = $stmt->fetch(PDO::FETCH_ASSOC)["tareas_completadas"];
+
+// Contar sesiones Pomodoro del objetivo
+$sql = "SELECT COUNT(*) AS total_sesiones,
+            COALESCE(SUM(sesiones_pomodoro.duracion_minutos), 0) AS total_minutos
+        FROM sesiones_pomodoro
+        INNER JOIN tareas ON sesiones_pomodoro.id_tarea = tareas.id_tarea
+        WHERE tareas.id_objetivo = ? AND sesiones_pomodoro.id_usuario = ?";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$idObjetivo, $idUsuario]);
+$datosPomodoroObjetivo = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$totalSesionesObjetivo = $datosPomodoroObjetivo["total_sesiones"];
+$totalMinutosObjetivo = $datosPomodoroObjetivo["total_minutos"];
+
+$horasObjetivo = floor($totalMinutosObjetivo / 60);
+$minutosRestantesObjetivo = $totalMinutosObjetivo % 60;
+
 // Actualizar objetivo
     if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["actualizar_objetivo"])) {
 
@@ -157,6 +189,31 @@ $objetivo = $stmt->fetch(PDO::FETCH_ASSOC);
         </button>
 
     </form>
+
+    <hr>
+
+<h2>Resumen del objetivo</h2>
+
+<p>
+    <strong>Tareas totales:</strong>
+    <?php echo htmlspecialchars($totalTareasObjetivo); ?>
+</p>
+
+<p>
+    <strong>Tareas completadas:</strong>
+    <?php echo htmlspecialchars($tareasCompletadasObjetivo); ?>
+</p>
+
+<p>
+    <strong>Sesiones Pomodoro registradas:</strong>
+    <?php echo htmlspecialchars($totalSesionesObjetivo); ?>
+</p>
+
+<p>
+    <strong>Tiempo invertido en este objetivo:</strong>
+    <?php echo htmlspecialchars($horasObjetivo); ?> h
+    <?php echo htmlspecialchars($minutosRestantesObjetivo); ?> min
+</p>
 
     <hr>
 
