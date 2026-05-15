@@ -80,20 +80,41 @@ foreach ($tareasConFecha as $tarea) {
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendario - Organica</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css">
 
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.20/index.global.min.js"></script>
 </head>
 
 <body>
 
-    <nav>
-        <a href="dashboard.php">Panel principal</a> |
-        <a href="objetivos.php">Mis objetivos</a> |
-        <a href="calendario.php">Calendario</a> |
-        <a href="estadisticas.php">Estadísticas</a> |
-        <a href="logout.php">Cerrar sesión</a>
-    </nav>
+    <nav class="navbar navbar-expand-lg organica-navbar">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="dashboard.php">
+            <span class="logo-esponja"></span>
+            <span>Organica</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="menuPrincipal">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-lg-3">
+                <li class="nav-item"><a class="nav-link" href="dashboard.php">Panel principal</a></li>
+                <li class="nav-item"><a class="nav-link" href="objetivos.php">Mis objetivos</a></li>
+                <li class="nav-item"><a class="nav-link" href="estadisticas.php">Estadísticas</a></li>
+                <li class="nav-item"><a class="nav-link cerrar-sesion" href="logout.php">Cerrar sesión</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main class="container py-5">
 
     <hr>
 
@@ -163,6 +184,8 @@ foreach ($tareasConFecha as $tarea) {
     </ul>
 
 <?php endif; ?>
+
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const calendarEl = document.getElementById("calendar");
@@ -187,6 +210,10 @@ foreach ($tareasConFecha as $tarea) {
     });
 
 </script>
+
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    </main>
 </body>
 
 </html>

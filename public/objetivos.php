@@ -44,87 +44,135 @@ $objetivos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mis objetivos - Organica</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 
 <body>
 
-    <h1>Mis objetivos</h1>
+<nav class="navbar navbar-expand-lg organica-navbar">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="dashboard.php">
+            <span class="logo-esponja"></span>
+            <span>Organica</span>
+        </a>
 
-    <p>Usuario: <?php echo htmlspecialchars($_SESSION["nombre"]); ?></p>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <nav>
+        <div class="collapse navbar-collapse" id="menuPrincipal">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-lg-3">
+                <li class="nav-item"><a class="nav-link" href="dashboard.php">Panel principal</a></li>
+                <li class="nav-item"><a class="nav-link" href="calendario.php">Calendario</a></li>
+                <li class="nav-item"><a class="nav-link" href="estadisticas.php">Estadísticas</a></li>
+                <li class="nav-item"><a class="nav-link cerrar-sesion" href="logout.php">Cerrar sesión</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
-    <nav>
-        <a href="dashboard.php">Panel principal</a> |
-        <a href="calendario.php">Calendario</a> |
-        <a href="estadisticas.php">Estadísticas</a> |
-        <a href="logout.php">Cerrar sesión</a>
-    </nav>
-    
-    </nav>
+<main class="container py-5">
 
-    <hr>
+    <section class="hero-corcho mb-5">
+        <div class="hero-papel">
+            <span class="etiqueta-seccion">Tablero de objetivos</span>
 
-    <h2>Crear nuevo objetivo</h2>
+            <h1>Mis objetivos</h1>
 
-    <?php if (!empty($mensaje)):  ?>
-    
-        <p style="color: red;"><?php echo htmlspecialchars($mensaje); ?></p>
+            <p class="texto-bienvenida">
+                Bienvenido/a, <strong><?php echo htmlspecialchars($_SESSION["nombre"]); ?></strong>.
+                En esta zona puedes crear objetivos y verlos como tarjetas dentro de tu tablero personal.
+            </p>
+        </div>
+    </section>
 
-    <?php endif; ?>
+    <section class="bloque-papel mb-5">
+        <h2 class="titulo-seccion">Crear nuevo objetivo</h2>
 
-    <form method="POST" action="">
+        <?php if (!empty($mensaje)): ?>
+            <p class="alert alert-danger"><?php echo htmlspecialchars($mensaje); ?></p>
+        <?php endif; ?>
 
-        <label for="titulo">Título del objetivo:</label><br>
-        <input type="text" id="titulo" name="titulo"><br><br>
+        <form method="POST" action="">
 
-        <label for="descripcion">Descripción:</label><br>
-        <textarea id="descripcion" name="descripcion" rows="4" cols="40"></textarea><br><br>
+            <div class="mb-3">
+                <label for="titulo" class="form-label">Título del objetivo:</label>
+                <input type="text" id="titulo" name="titulo" class="form-control">
+            </div>
 
-        <button type="submit" name="crear_objetivo">Crear objetivo</button>
+            <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción:</label>
+                <textarea id="descripcion" name="descripcion" rows="4" class="form-control"></textarea>
+            </div>
 
-    </form>
+            <button type="submit" name="crear_objetivo" class="btn btn-organica">
+                Crear objetivo
+            </button>
 
-    <hr>
+        </form>
+    </section>
 
-    <h2>Tu panel de objetivos</h2>
+    <section>
+        <h2 class="titulo-seccion">Tu panel de objetivos</h2>
 
-    <?php if (empty($objetivos)): ?>
-        
-        <p>Todavía no tienes objetibvos creados.</p>
+        <?php if (empty($objetivos)): ?>
 
-    <?php else: ?>
+            <div class="bloque-papel">
+                <p>Todavía no tienes objetivos creados.</p>
+            </div>
 
-    
-    <div style="display: flex; flex-wrap: wrap; gap: 15px;">
-        <?php foreach ($objetivos as $objetivo): ?>
-            <div style="border: 1px solid #ccc; padding: 15px; width: 250px; min-height: 160px;">
+        <?php else: ?>
 
-                <h3><?php echo htmlspecialchars($objetivo["titulo"]); ?></h3>
+            <div class="row g-4">
 
-                <p>
-                    <?php echo nl2br(htmlspecialchars($objetivo["descripcion"])); ?>
-                </p>
+                <?php foreach ($objetivos as $objetivo): ?>
 
-                <p>
-                    <strong>Estado:</strong>
-                    <?php echo htmlspecialchars($objetivo["estado"]); ?>
-                </p>
+                    <div class="col-md-4">
+                        <article class="tarjeta-objetivo h-100">
+                            <span class="pin"></span>
 
-                <p>
-                    <a href="objetivo_detalle.php?id_objetivo=<?php echo $objetivo["id_objetivo"]; ?>">
-                        Entrar al objetivo
-                    </a>
-                </p>
+                            <?php if ($objetivo["estado"] === "completado"): ?>
+                                <span class="estado estado-completado">Completado</span>
+                            <?php else: ?>
+                                <span class="estado estado-pendiente">Pendiente</span>
+                            <?php endif; ?>
+
+                            <h3><?php echo htmlspecialchars($objetivo["titulo"]); ?></h3>
+
+                            <p>
+                                <?php echo nl2br(htmlspecialchars($objetivo["descripcion"])); ?>
+                            </p>
+
+                            <div class="barra-progreso">
+                                <div style="width: <?php echo ($objetivo["estado"] === "completado") ? '100%' : '35%'; ?>;"></div>
+                            </div>
+
+                            <div class="datos-objetivo">
+                                <span>Estado</span>
+                                <span><?php echo htmlspecialchars($objetivo["estado"]); ?></span>
+                            </div>
+
+                            <a href="objetivo_detalle.php?id_objetivo=<?php echo $objetivo["id_objetivo"]; ?>" class="btn btn-sm btn-organica mt-3">
+                                Entrar al objetivo
+                            </a>
+                        </article>
+                    </div>
+
+                <?php endforeach; ?>
 
             </div>
 
-            <?php endforeach; ?>
-    </div>
+        <?php endif; ?>
+    </section>
 
-    <?php endif; ?>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
-
 </html>

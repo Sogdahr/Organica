@@ -45,64 +45,171 @@ $minutosRestantes = $minutosPomodoro % 60;
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Organica</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
+
 
 <body>
 
-    <h1>Panel principal</h1>
+<nav class="navbar navbar-expand-lg organica-navbar">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="dashboard.php">
+                <span class="logo-esponja"></span>
+                <span>Organica</span>
+            </a>
 
-    <p>Bienvenid@, <?php echo htmlspecialchars($_SESSION["nombre"]); ?></p>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-    <nav>
-
-        <a href="objetivos.php">Mis objetivos</a> |
-        <a href="calendario.php">Calendario</a> |
-        <a href="estadisticas.php">Estadísticas</a> |
-        <a href="logout.php">Cerrar sesión</a>
-
+            <div class="collapse navbar-collapse" id="menuPrincipal">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-lg-3">
+                    <li class="nav-item">
+                        <a class="nav-link" href="objetivos.php">Mis objetivos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="calendario.php">Calendario</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="estadisticas.php">Estadísticas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link cerrar-sesion" href="logout.php">Cerrar sesión</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </nav>
 
-    <hr>
-    
-    <h2>Resumen rápido</h2>
+    <main class="container py-5">
 
-    <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+<section class="hero-corcho mb-5">
+    <div class="hero-papel">
 
-        <div style="border: 1px solid #ccc; padding: 15px; width: 220px;">
-            <h3>Objetivos</h3>
-            <p><?php echo htmlspecialchars($totalObjetivos); ?> objetivos creados</p>
-        </div>
+        <div class="row align-items-center">
 
-        <div style="border: 1px solid #ccc; padding: 15px; width: 220px;">
-            <h3>Tareas pendientes</h3>
-            <p><?php echo htmlspecialchars($tareasPendientes); ?> tareas pendientes</p>
-        </div>
+            <div class="col-lg-7">
+                <span class="etiqueta-seccion">Panel personal</span>
 
-        <div style="border: 1px solid #ccc; padding: 15px; width: 220px;">
-            <h3>Tiempo Pomodoro</h3>
-            <p>
-                <?php echo htmlspecialchars($horasPomodoro); ?> h
-                <?php echo htmlspecialchars($minutosRestantes); ?> min registrados
-            </p>
+                <h1>Panel principal</h1>
+
+                <p class="texto-bienvenida">
+                    Bienvenido/a, 
+                    <strong><?php echo htmlspecialchars($_SESSION["nombre"]); ?></strong>.
+                    Organiza tus objetivos, controla tus tareas y registra tu tiempo de trabajo con Pomodoro.
+                </p>
+
+                <div class="d-flex flex-wrap gap-3 mt-4">
+                    <a href="objetivos.php" class="btn btn-organica">
+                        Ir a mis objetivos
+                    </a>
+
+                    <a href="calendario.php" class="btn btn-organica-outline">
+                        Ver calendario
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-5 mt-4 mt-lg-0">
+                <div class="zona-postit">
+
+                    <div class="dibujo-maceta">
+                        <div class="tallo"></div>
+                        <div class="hoja hoja-1"></div>
+                        <div class="hoja hoja-2"></div>
+                        <div class="maceta"></div>
+                    </div>
+
+                    <div class="postit">
+                        <span class="chincheta"></span>
+                        <p>Un día organizado,<br>una mente en calma.</p>
+                        <span class="corazon">♡</span>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
 
     </div>
+</section>
 
-    <hr>
+        <section class="mb-5">
+            <h2 class="titulo-seccion">Resumen rápido</h2>
 
-    <h2>Accesos principales</h2>
+            <div class="row g-4">
 
-    <p>Desde este panel podrás gestionar tus objetivos, tareas y sesiones Pomodoro.</p>
+                <div class="col-md-4">
+                    <article class="tarjeta-resumen">
+                        <span class="pin"></span>
+                        <div class="icono-resumen">◎</div>
+                        <h3>Objetivos</h3>
+                        <p class="numero"><?php echo htmlspecialchars($totalObjetivos); ?></p>
+                        <p class="descripcion">objetivos creados</p>
+                    </article>
+                </div>
 
-    <p>
-        <a href="objetivos.php">Ir a mis objetivos</a>
-    </p>
+                <div class="col-md-4">
+                    <article class="tarjeta-resumen tarjeta-hoja">
+                        <span class="pin"></span>
+                        <div class="icono-resumen">☑</div>
+                        <h3>Tareas pendientes</h3>
+                        <p class="numero"><?php echo htmlspecialchars($tareasPendientes); ?></p>
+                        <p class="descripcion">tareas por completar</p>
+                    </article>
+                </div>
 
-    <p>
-        <a href="estadisticas.php">Ver estadísticas personales</a>
-    </p>
+                <div class="col-md-4">
+                    <article class="tarjeta-resumen">
+                        <span class="pin"></span>
+                        <div class="icono-resumen">◷</div>
+                        <h3>Tiempo Pomodoro</h3>
+                        <p class="numero">
+                            <?php echo htmlspecialchars($horasPomodoro); ?> h
+                            <?php echo htmlspecialchars($minutosRestantes); ?> min
+                        </p>
+                        <p class="descripcion">registrados</p>
+                    </article>
+                </div>
 
+            </div>
+        </section>
+
+        <section class="accesos-papel mb-5">
+            <h2 class="titulo-seccion mb-4">Accesos principales</h2>
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <a href="objetivos.php" class="acceso-btn acceso-principal">
+                        <span>◎</span>
+                        Ir a mis objetivos
+                    </a>
+                </div>
+
+                <div class="col-md-4">
+                    <a href="calendario.php" class="acceso-btn">
+                        <span>▣</span>
+                        Ver calendario
+                    </a>
+                </div>
+
+                <div class="col-md-4">
+                    <a href="estadisticas.php" class="acceso-btn">
+                        <span>▥</span>
+                        Ver estadísticas
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

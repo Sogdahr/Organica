@@ -99,55 +99,140 @@ if ($totalSubtareas > 0) {
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estadísticas - Organica</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 
 <body>
 
-        <nav>
-            <a href="dashboard.php">Panel principal</a> |
-            <a href="objetivos.php">Mis objetivos</a> |
-            <a href="calendario.php">Calendario</a> |
-            <a href="logout.php">Cerrar sesión</a>
-        </nav>
-    
-    <hr>
+<nav class="navbar navbar-expand-lg organica-navbar">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="dashboard.php">
+            <span class="logo-esponja"></span>
+            <span>Organica</span>
+        </a>
 
-    <h1>Estadísticas personales</h1>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <p>Usuario: <?php echo htmlspecialchars($_SESSION["nombre"]); ?></p>
+        <div class="collapse navbar-collapse" id="menuPrincipal">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-lg-3">
+                <li class="nav-item"><a class="nav-link" href="dashboard.php">Panel principal</a></li>
+                <li class="nav-item"><a class="nav-link" href="objetivos.php">Mis objetivos</a></li>
+                <li class="nav-item"><a class="nav-link" href="calendario.php">Calendario</a></li>
+                <li class="nav-item"><a class="nav-link cerrar-sesion" href="logout.php">Cerrar sesión</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
-    <hr>
+<main class="container py-5">
 
-    <h2>Resumen de objetivos</h2>
+    <section class="hero-corcho mb-5">
+        <div class="hero-papel">
+            <span class="etiqueta-seccion">Datos de productividad</span>
 
-    <p>Total de objetivos: <?php echo htmlspecialchars($totalObjetivos); ?></p>
-    <p>Objetivos completados: <?php echo htmlspecialchars($objetivosCompletados); ?></p>
-    <p>Progreso de objetivos: <?php echo htmlspecialchars($porcentajeObjetivos); ?>%</p>
+            <h1>Estadísticas personales</h1>
 
-    <hr>
+            <p class="texto-bienvenida">
+                Resumen general de objetivos, tareas, subtareas y sesiones Pomodoro del usuario
+                <strong><?php echo htmlspecialchars($_SESSION["nombre"]); ?></strong>.
+            </p>
+        </div>
+    </section>
 
-    <h2>Resumen de tareas</h2>
+    <section class="mb-5">
+        <h2 class="titulo-seccion">Resumen general</h2>
 
-    <p>Total de tareas: <?php echo htmlspecialchars($totalTareas); ?></p>
-    <p>Tareas completadas: <?php echo htmlspecialchars($tareasCompletadas); ?></p>
-    <p>Progreso de tareas: <?php echo htmlspecialchars($porcentajeTareas); ?>%</p>
+        <div class="row g-4">
 
-    <hr>
+            <div class="col-md-4">
+                <article class="tarjeta-resumen h-100">
+                    <span class="pin"></span>
+                    <div class="icono-resumen">◎</div>
+                    <h3>Objetivos</h3>
+                    <p class="numero"><?php echo htmlspecialchars($totalObjetivos); ?></p>
+                    <p class="descripcion"><?php echo htmlspecialchars($objetivosCompletados); ?> completados</p>
 
-    <h2>Resumen de subtareas</h2>
+                    <div class="barra-progreso">
+                        <div style="width: <?php echo htmlspecialchars($porcentajeObjetivos); ?>%;"></div>
+                    </div>
 
-    <p>Total de subtareas: <?php echo htmlspecialchars($totalSubtareas); ?></p>
-    <p>Subtareas completadas: <?php echo htmlspecialchars($subtareasCompletadas); ?></p>
-    <p>Progreso de subtareas: <?php echo htmlspecialchars($porcentajeSubtareas); ?>%</p>
+                    <p class="descripcion"><?php echo htmlspecialchars($porcentajeObjetivos); ?>% de progreso</p>
+                </article>
+            </div>
 
-    <hr>
+            <div class="col-md-4">
+                <article class="tarjeta-resumen h-100 tarjeta-hoja">
+                    <span class="pin"></span>
+                    <div class="icono-resumen">☑</div>
+                    <h3>Tareas</h3>
+                    <p class="numero"><?php echo htmlspecialchars($totalTareas); ?></p>
+                    <p class="descripcion"><?php echo htmlspecialchars($tareasCompletadas); ?> completadas</p>
 
-    <h2>Productividad Pomodoro</h2>
+                    <div class="barra-progreso">
+                        <div style="width: <?php echo htmlspecialchars($porcentajeTareas); ?>%;"></div>
+                    </div>
 
-    <p>Sesiones Pomodoro registradas: <?php echo htmlspecialchars($totalSesiones); ?></p>
-    <p>Minutos totales registrados: <?php echo htmlspecialchars($totalMinutos); ?> minutos</p>
+                    <p class="descripcion"><?php echo htmlspecialchars($porcentajeTareas); ?>% de progreso</p>
+                </article>
+            </div>
+
+            <div class="col-md-4">
+                <article class="tarjeta-resumen h-100">
+                    <span class="pin"></span>
+                    <div class="icono-resumen">✓</div>
+                    <h3>Subtareas</h3>
+                    <p class="numero"><?php echo htmlspecialchars($totalSubtareas); ?></p>
+                    <p class="descripcion"><?php echo htmlspecialchars($subtareasCompletadas); ?> completadas</p>
+
+                    <div class="barra-progreso">
+                        <div style="width: <?php echo htmlspecialchars($porcentajeSubtareas); ?>%;"></div>
+                    </div>
+
+                    <p class="descripcion"><?php echo htmlspecialchars($porcentajeSubtareas); ?>% de progreso</p>
+                </article>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="accesos-papel">
+        <h2 class="titulo-seccion">Productividad Pomodoro</h2>
+
+        <div class="row g-4">
+
+            <div class="col-md-6">
+                <article class="tarjeta-resumen h-100">
+                    <span class="pin"></span>
+                    <div class="icono-resumen">◷</div>
+                    <h3>Sesiones registradas</h3>
+                    <p class="numero"><?php echo htmlspecialchars($totalSesiones); ?></p>
+                    <p class="descripcion">sesiones Pomodoro guardadas</p>
+                </article>
+            </div>
+
+            <div class="col-md-6">
+                <article class="tarjeta-resumen h-100">
+                    <span class="pin"></span>
+                    <div class="icono-resumen">⌛</div>
+                    <h3>Tiempo total</h3>
+                    <p class="numero"><?php echo htmlspecialchars($totalMinutos); ?> min</p>
+                    <p class="descripcion">minutos registrados</p>
+                </article>
+            </div>
+
+        </div>
+    </section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
-
 </html>

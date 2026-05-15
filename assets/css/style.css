@@ -1,0 +1,793 @@
+/* ==========================
+   VARIABLES GENERALES
+========================== */
+
+:root {
+    --color-fondo: #f7f1e3;
+    --color-papel: #fffaf0;
+    --color-verde: #2f5d3a;
+    --color-verde-medio: #4f7d57;
+    --color-verde-claro: #dfead7;
+    --color-salvia: #eef4e8;
+    --color-corcho: #c9a77b;
+    --color-corcho-oscuro: #a98254;
+    --color-postit: #fff1a8;
+    --color-postit-verde: #dceecb;
+    --color-postit-rosa: #f6d6c8;
+    --color-texto: #263327;
+    --color-texto-suave: #6d756d;
+    --sombra-suave: 0 10px 25px rgba(72, 55, 31, 0.12);
+    --radio-grande: 24px;
+    --radio-medio: 16px;
+}
+
+/* ==========================
+   BASE
+========================== */
+
+body {
+    margin: 0;
+    font-family: "Nunito", Arial, sans-serif;
+    background:
+        radial-gradient(circle at top left, rgba(92, 129, 85, 0.12), transparent 280px),
+        radial-gradient(circle at bottom right, rgba(201, 167, 123, 0.20), transparent 300px),
+        var(--color-fondo);
+    color: var(--color-texto);
+}
+
+h1,
+h2,
+h3,
+p {
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* ==========================
+   NAVBAR
+========================== */
+
+.organica-navbar {
+    background-color: rgba(255, 250, 240, 0.95);
+    border-bottom: 1px solid rgba(86, 68, 42, 0.12);
+    box-shadow: 0 4px 15px rgba(72, 55, 31, 0.06);
+}
+
+.organica-navbar .navbar-brand {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--color-verde);
+    letter-spacing: 1px;
+}
+
+.organica-navbar .nav-link {
+    color: var(--color-texto);
+    font-weight: 700;
+    padding: 8px 12px;
+    border-radius: 999px;
+    transition: 0.2s;
+}
+
+.organica-navbar .nav-link:hover {
+    color: var(--color-verde);
+    background-color: var(--color-salvia);
+}
+
+.organica-navbar .cerrar-sesion {
+    color: #5b3d2a;
+}
+
+/* Logo simple simulando una esponja ramificada */
+.logo-esponja {
+    width: 34px;
+    height: 34px;
+    display: inline-block;
+    position: relative;
+    border-radius: 50%;
+    background: var(--color-verde-claro);
+    border: 2px solid var(--color-verde-medio);
+}
+
+.logo-esponja::before,
+.logo-esponja::after {
+    content: "";
+    position: absolute;
+    background: var(--color-verde);
+    border-radius: 999px;
+}
+
+.logo-esponja::before {
+    width: 18px;
+    height: 4px;
+    top: 13px;
+    left: 7px;
+    transform: rotate(-35deg);
+}
+
+.logo-esponja::after {
+    width: 4px;
+    height: 18px;
+    top: 7px;
+    left: 15px;
+    transform: rotate(25deg);
+}
+
+/* ==========================
+   HERO CORCHO / PANEL PRINCIPAL
+========================== */
+
+.hero-corcho {
+    background:
+        linear-gradient(45deg, rgba(130, 88, 42, 0.15) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(130, 88, 42, 0.15) 25%, transparent 25%),
+        var(--color-corcho);
+    background-size: 18px 18px;
+    border-radius: 30px;
+    padding: 18px;
+    box-shadow: var(--sombra-suave);
+}
+
+.hero-papel {
+    background:
+        radial-gradient(circle at 80% 30%, rgba(79, 125, 87, 0.09), transparent 250px),
+        var(--color-papel);
+    border-radius: 22px;
+    padding: 48px;
+    min-height: 270px;
+    border: 1px solid rgba(86, 68, 42, 0.12);
+}
+
+.etiqueta-seccion {
+    display: inline-block;
+    color: var(--color-verde);
+    background-color: var(--color-salvia);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    margin-bottom: 16px;
+}
+
+.hero-papel h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--color-verde);
+    margin-bottom: 18px;
+}
+
+.texto-bienvenida {
+    max-width: 650px;
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--color-texto);
+}
+
+.texto-bienvenida strong {
+    color: var(--color-verde);
+}
+
+/* ==========================
+   BOTONES
+========================== */
+
+.btn-organica {
+    background-color: var(--color-verde);
+    color: white;
+    border: 2px solid var(--color-verde);
+    border-radius: 12px;
+    padding: 10px 22px;
+    font-weight: 800;
+    box-shadow: 0 6px 14px rgba(47, 93, 58, 0.18);
+}
+
+.btn-organica:hover {
+    background-color: #24492d;
+    border-color: #24492d;
+    color: white;
+}
+
+.btn-organica-outline {
+    background-color: transparent;
+    color: var(--color-verde);
+    border: 2px solid var(--color-verde);
+    border-radius: 12px;
+    padding: 10px 22px;
+    font-weight: 800;
+}
+
+.btn-organica-outline:hover {
+    background-color: var(--color-verde);
+    color: white;
+}
+
+/* ==========================
+   POST-IT Y DECORACIÓN DEL HERO
+========================== */
+
+.zona-postit {
+    min-height: 210px;
+    position: relative;
+}
+
+.postit {
+    width: 220px;
+    min-height: 170px;
+    background-color: var(--color-postit);
+    padding: 34px 22px 20px;
+    border-radius: 4px;
+    box-shadow: 0 12px 20px rgba(72, 55, 31, 0.18);
+    transform: rotate(4deg);
+    margin-left: auto;
+    position: relative;
+}
+
+.postit p {
+    font-weight: 800;
+    color: #6a5624;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.chincheta,
+.pin {
+    width: 18px;
+    height: 18px;
+    background: radial-gradient(circle at 30% 30%, #8eaa70, #385a31);
+    border-radius: 50%;
+    position: absolute;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+}
+
+.chincheta {
+    top: -9px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.corazon {
+    display: block;
+    text-align: center;
+    font-size: 1.6rem;
+    color: #8b7a36;
+}
+
+/* Dibujo simple decorativo tipo planta/esponja ramificada */
+.dibujo-maceta {
+    position: absolute;
+    left: 30px;
+    bottom: 10px;
+    width: 120px;
+    height: 140px;
+    opacity: 0.65;
+}
+
+.maceta {
+    position: absolute;
+    bottom: 0;
+    left: 35px;
+    width: 55px;
+    height: 35px;
+    background-color: #c9a77b;
+    border-radius: 0 0 14px 14px;
+}
+
+.tallo {
+    position: absolute;
+    bottom: 32px;
+    left: 61px;
+    width: 5px;
+    height: 75px;
+    background-color: var(--color-verde-medio);
+    border-radius: 999px;
+}
+
+.hoja {
+    position: absolute;
+    width: 42px;
+    height: 24px;
+    background-color: var(--color-verde-medio);
+    border-radius: 100% 0 100% 0;
+}
+
+.hoja-1 {
+    bottom: 72px;
+    left: 24px;
+    transform: rotate(20deg);
+}
+
+.hoja-2 {
+    bottom: 95px;
+    right: 18px;
+    transform: rotate(-25deg);
+}
+
+/* ==========================
+   TÍTULOS DE SECCIÓN
+========================== */
+
+.titulo-seccion {
+    color: var(--color-verde);
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.titulo-seccion::before {
+    content: "✦";
+    font-size: 1.2rem;
+    color: var(--color-corcho-oscuro);
+}
+
+/* ==========================
+   TARJETAS RESUMEN
+========================== */
+
+.tarjeta-resumen {
+    min-height: 210px;
+    background-color: var(--color-papel);
+    border-radius: var(--radio-medio);
+    padding: 34px 28px;
+    box-shadow: var(--sombra-suave);
+    border: 1px solid rgba(86, 68, 42, 0.10);
+    position: relative;
+    overflow: hidden;
+}
+
+.tarjeta-resumen::after {
+    content: "";
+    width: 120px;
+    height: 120px;
+    background-color: rgba(79, 125, 87, 0.10);
+    position: absolute;
+    right: -35px;
+    bottom: -45px;
+    border-radius: 50%;
+}
+
+.tarjeta-resumen .pin {
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.icono-resumen {
+    width: 58px;
+    height: 58px;
+    background-color: var(--color-verde-claro);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-verde);
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 18px;
+}
+
+.tarjeta-resumen h3 {
+    font-size: 1.35rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.tarjeta-resumen .numero {
+    font-size: 2.3rem;
+    font-weight: 800;
+    color: var(--color-verde);
+    margin-bottom: 8px;
+}
+
+.tarjeta-resumen .descripcion {
+    color: var(--color-texto-suave);
+    font-weight: 600;
+}
+
+.tarjeta-hoja {
+    border-left: 8px dotted rgba(47, 93, 58, 0.18);
+}
+
+/* ==========================
+   ACCESOS
+========================== */
+
+.accesos-papel {
+    background:
+        linear-gradient(rgba(47, 93, 58, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(47, 93, 58, 0.05) 1px, transparent 1px),
+        var(--color-papel);
+    background-size: 28px 28px;
+    border-radius: var(--radio-grande);
+    padding: 34px;
+    box-shadow: var(--sombra-suave);
+    border: 1px solid rgba(86, 68, 42, 0.10);
+}
+
+.acceso-btn {
+    min-height: 62px;
+    border: 2px solid rgba(47, 93, 58, 0.35);
+    border-radius: 14px;
+    color: var(--color-verde);
+    background-color: rgba(255, 250, 240, 0.7);
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: 0.2s;
+}
+
+.acceso-btn:hover {
+    background-color: var(--color-salvia);
+    color: var(--color-verde);
+    transform: translateY(-2px);
+}
+
+.acceso-principal {
+    background-color: var(--color-verde);
+    color: white;
+    border-color: var(--color-verde);
+}
+
+.acceso-principal:hover {
+    background-color: #24492d;
+    color: white;
+}
+
+/* ==========================
+   TARJETAS DE OBJETIVOS
+========================== */
+
+.tarjeta-objetivo {
+    background-color: var(--color-papel);
+    border-radius: var(--radio-medio);
+    padding: 28px;
+    box-shadow: var(--sombra-suave);
+    border: 1px solid rgba(86, 68, 42, 0.10);
+    position: relative;
+    min-height: 280px;
+}
+
+.tarjeta-objetivo .pin {
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.tarjeta-objetivo h3 {
+    color: var(--color-verde);
+    font-weight: 800;
+    margin-top: 18px;
+    margin-bottom: 10px;
+}
+
+.tarjeta-objetivo p {
+    color: var(--color-texto-suave);
+    line-height: 1.5;
+}
+
+.estado {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 800;
+}
+
+.estado-activo {
+    background-color: var(--color-verde-claro);
+    color: var(--color-verde);
+}
+
+.estado-pendiente {
+    background-color: var(--color-postit);
+    color: #6a5624;
+}
+
+.estado-completado {
+    background-color: #d8f3dc;
+    color: #27633a;
+}
+
+.barra-progreso {
+    width: 100%;
+    height: 10px;
+    background-color: #e8dfcd;
+    border-radius: 999px;
+    overflow: hidden;
+    margin: 22px 0 14px;
+}
+
+.barra-progreso div {
+    height: 100%;
+    background-color: var(--color-verde-medio);
+    border-radius: 999px;
+}
+
+.datos-objetivo {
+    display: flex;
+    justify-content: space-between;
+    color: var(--color-texto-suave);
+    font-weight: 800;
+}
+
+/* ==========================
+   TARJETAS / BLOQUES GENERALES
+========================== */
+
+.bloque-papel {
+    background-color: var(--color-papel);
+    border-radius: var(--radio-grande);
+    padding: 30px;
+    box-shadow: var(--sombra-suave);
+    border: 1px solid rgba(86, 68, 42, 0.10);
+}
+
+.tarjeta-tarea {
+    background-color: var(--color-papel);
+    border-radius: var(--radio-medio);
+    padding: 22px;
+    box-shadow: var(--sombra-suave);
+    border: 1px solid rgba(86, 68, 42, 0.10);
+    position: relative;
+}
+
+.tarjeta-tarea h3 {
+    color: var(--color-verde);
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.dato-mini {
+    display: inline-block;
+    background-color: var(--color-salvia);
+    color: var(--color-verde);
+    border-radius: 999px;
+    padding: 5px 12px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    margin-right: 6px;
+    margin-bottom: 6px;
+}
+
+/* ==========================
+   FORMULARIOS
+========================== */
+
+.form-control,
+.form-select {
+    border-radius: 12px;
+    border: 1px solid rgba(86, 68, 42, 0.18);
+    background-color: #fffdf7;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--color-verde-medio);
+    box-shadow: 0 0 0 0.2rem rgba(79, 125, 87, 0.18);
+}
+
+label {
+    font-weight: 800;
+    color: var(--color-verde);
+    margin-bottom: 6px;
+}
+
+/* ==========================
+   NOTAS POST-IT
+========================== */
+
+.nota-postit {
+    background-color: var(--color-postit);
+    border-radius: 8px;
+    padding: 26px;
+    min-height: 170px;
+    box-shadow: 0 12px 22px rgba(72, 55, 31, 0.14);
+    transform: rotate(-1deg);
+    border: 1px solid rgba(120, 96, 38, 0.12);
+}
+
+.nota-postit h3 {
+    font-weight: 800;
+    color: #6a5624;
+    margin-bottom: 12px;
+}
+
+.nota-postit p {
+    color: #5d512b;
+    line-height: 1.5;
+    font-weight: 600;
+}
+
+.nota-verde {
+    background-color: var(--color-postit-verde);
+    transform: rotate(1deg);
+}
+
+.nota-verde h3,
+.nota-verde p {
+    color: var(--color-verde);
+}
+
+.nota-rosa {
+    background-color: var(--color-postit-rosa);
+    transform: rotate(-1deg);
+}
+
+.nota-rosa h3,
+.nota-rosa p {
+    color: #744331;
+}
+
+/* ==========================
+   POMODORO
+========================== */
+
+.pomodoro-panel {
+    background:
+        radial-gradient(circle at top right, rgba(255, 241, 168, 0.35), transparent 160px),
+        var(--color-papel);
+    border-radius: var(--radio-grande);
+    padding: 28px;
+    box-shadow: var(--sombra-suave);
+    border: 1px solid rgba(86, 68, 42, 0.10);
+}
+
+.pantalla-pomodoro {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--color-verde);
+    background-color: var(--color-salvia);
+    border-radius: 18px;
+    padding: 18px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* ==========================
+   CALENDARIO
+========================== */
+
+#calendar {
+    background-color: var(--color-papel);
+    border-radius: var(--radio-grande);
+    padding: 22px;
+    box-shadow: var(--sombra-suave);
+    border: 1px solid rgba(86, 68, 42, 0.10);
+}
+
+.fc .fc-toolbar-title {
+    color: var(--color-verde);
+    font-weight: 800;
+}
+
+.fc .fc-button-primary {
+    background-color: var(--color-verde);
+    border-color: var(--color-verde);
+}
+
+.fc .fc-button-primary:hover {
+    background-color: #24492d;
+    border-color: #24492d;
+}
+
+.fc-day-today {
+    background-color: rgba(223, 234, 215, 0.7) !important;
+}
+
+/* ==========================
+   RESPONSIVE
+========================== */
+
+@media (max-width: 768px) {
+    .hero-papel {
+        padding: 30px;
+    }
+
+    .hero-papel h1 {
+        font-size: 2.3rem;
+    }
+
+    .postit {
+        margin: 30px auto 0;
+    }
+
+    .dibujo-maceta {
+        display: none;
+    }
+
+    .titulo-seccion {
+        font-size: 1.6rem;
+    }
+}
+
+/* ==========================
+   AJUSTES FINALES DASHBOARD HERO
+   Corrige el papel, el post-it y la decoración
+========================== */
+
+.hero-corcho {
+    background:
+        linear-gradient(45deg, rgba(130, 88, 42, 0.15) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(130, 88, 42, 0.15) 25%, transparent 25%),
+        var(--color-corcho);
+    background-size: 18px 18px;
+    border-radius: 30px;
+    padding: 18px;
+    box-shadow: var(--sombra-suave);
+}
+
+.hero-papel {
+    background:
+        radial-gradient(circle at 80% 30%, rgba(79, 125, 87, 0.07), transparent 250px),
+        var(--color-papel);
+    border-radius: 22px;
+    padding: 42px 36px;
+    min-height: 270px;
+    border: 1px solid rgba(86, 68, 42, 0.12);
+}
+
+.zona-postit {
+    min-height: 220px;
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.postit {
+    width: 210px;
+    min-height: 165px;
+    background-color: var(--color-postit);
+    padding: 30px 22px 18px;
+    border-radius: 4px;
+    box-shadow: 0 12px 20px rgba(72, 55, 31, 0.18);
+    transform: rotate(3deg);
+    margin-left: auto;
+    position: relative;
+    z-index: 2;
+}
+
+.dibujo-maceta {
+    position: absolute;
+    right: 180px;
+    bottom: 0;
+    width: 110px;
+    height: 130px;
+    opacity: 0.55;
+    z-index: 1;
+}
+
+/* Ajuste para que el hero no se vea aplastado */
+.hero-papel .row {
+    min-height: 230px;
+}
+
+/* En pantallas pequeñas, ocultamos la decoración para que no estorbe */
+@media (max-width: 768px) {
+    .hero-papel {
+        padding: 30px;
+    }
+
+    .hero-papel h1 {
+        font-size: 2.3rem;
+    }
+
+    .zona-postit {
+        justify-content: center;
+        min-height: 190px;
+    }
+
+    .postit {
+        margin: 30px auto 0;
+    }
+
+    .dibujo-maceta {
+        display: none;
+    }
+}
