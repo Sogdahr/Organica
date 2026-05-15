@@ -108,130 +108,160 @@ if (isset($_GET["eliminar"])) {
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Tareas - Organica</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="../assets/css/style.css">link rel="stylesheet" href="../assets/css/style.css">
-
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 
 <body>
 
-    <nav>
-        <nav>
-        <a href="dashboard.php">Panel principal</a> |
-        <a href="objetivos.php">Mis objetivos</a> |
-        <a href="calendario.php">Calendario</a> |
-        <a href="estadisticas.php">Estadísticas</a> |
-        <a href="objetivo_detalle.php?id_objetivo=<?php echo $idObjetivo; ?>">Volver al objetivo</a> |
-        <a href="logout.php">Cerrar sesión</a>
+<nav class="navbar navbar-expand-lg organica-navbar">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="dashboard.php">
+            <span class="logo-esponja"></span>
+            <span>Organica</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="menuPrincipal">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-lg-3">
+                <li class="nav-item"><a class="nav-link" href="dashboard.php">Panel principal</a></li>
+                <li class="nav-item"><a class="nav-link" href="objetivos.php">Mis objetivos</a></li>
+                <li class="nav-item"><a class="nav-link" href="calendario.php">Calendario</a></li>
+                <li class="nav-item"><a class="nav-link" href="estadisticas.php">Estadísticas</a></li>
+                <li class="nav-item"><a class="nav-link" href="objetivo_detalle.php?id_objetivo=<?php echo $idObjetivo; ?>">Volver al objetivo</a></li>
+                <li class="nav-item"><a class="nav-link cerrar-sesion" href="logout.php">Cerrar sesión</a></li>
+            </ul>
+        </div>
+    </div>
 </nav>
-    </nav>
 
-    <hr>
+<main class="container py-5">
 
-    <h1>Tareas del objetivo</h1>
+    <section class="hero-corcho mb-5">
+        <div class="hero-papel">
+            <span class="etiqueta-seccion">Checklist del objetivo</span>
 
-    <h2><?php echo htmlspecialchars($objetivo["titulo"]); ?></h2>
+            <h1>Tareas del objetivo</h1>
 
-    <p>
-        <?php echo nl2br(htmlspecialchars($objetivo["descripcion"])); ?>
-    </p>
+            <p class="texto-bienvenida">
+                <strong><?php echo htmlspecialchars($objetivo["titulo"]); ?></strong><br>
+                <?php echo nl2br(htmlspecialchars($objetivo["descripcion"])); ?>
+            </p>
+        </div>
+    </section>
 
-    <hr>
+    <section class="bloque-papel mb-5">
+        <h2 class="titulo-seccion">Crear nueva tarea</h2>
 
-    <h2>Crear nueva tarea</h2>
+        <?php if (!empty($mensajeTarea)): ?>
+            <p class="alert alert-danger"><?php echo htmlspecialchars($mensajeTarea); ?></p>
+        <?php endif; ?>
 
-    <?php if (!empty($mensajeTarea)): ?>
-        <p style="color: red;"><?php echo htmlspecialchars($mensajeTarea); ?></p>
-    <?php endif; ?>
+        <form method="POST" action="">
 
-    <form method="POST" action="">
+            <div class="mb-3">
+                <label for="titulo" class="form-label">Título de la tarea:</label>
+                <input type="text" id="titulo" name="titulo" class="form-control">
+            </div>
 
-        <label for="titulo">Título de la tarea:</label><br>
-        <input type="text" id="titulo" name="titulo"><br><br>
+            <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción:</label>
+                <textarea id="descripcion" name="descripcion" rows="4" class="form-control"></textarea>
+            </div>
 
-        <label for="descripcion">Descripción:</label><br>
-        <textarea id="descripcion" name="descripcion" rows="4" cols="50"></textarea><br><br>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="fecha_limite" class="form-label">Fecha límite:</label>
+                    <input type="date" id="fecha_limite" name="fecha_limite" class="form-control">
+                </div>
 
-        <label for="fecha_limite">Fecha límite:</label><br>
-        <input type="date" id="fecha_limite" name="fecha_limite"><br><br>
+                <div class="col-md-6 mb-3">
+                    <label for="prioridad" class="form-label">Prioridad:</label>
+                    <select id="prioridad" name="prioridad" class="form-select">
+                        <option value="baja">Baja</option>
+                        <option value="media" selected>Media</option>
+                        <option value="alta">Alta</option>
+                    </select>
+                </div>
+            </div>
 
-        <label for="prioridad">Prioridad:</label><br>
-        <select id="prioridad" name="prioridad">
-            <option value="baja">Baja</option>
-            <option value="media" selected>Media</option>
-            <option value="alta">Alta</option>
-        </select><br><br>
+            <button type="submit" name="crear_tarea" class="btn btn-organica">
+                Crear tarea
+            </button>
 
-        <button type="submit" name="crear_tarea">Crear tarea</button>
+        </form>
+    </section>
 
-    </form>
+    <section>
+        <h2 class="titulo-seccion">Listado de tareas</h2>
 
-    <hr>
+        <?php if (empty($tareas)): ?>
 
-    <h2>Listado de tareas</h2>
+            <div class="bloque-papel">
+                <p>Este objetivo todavía no tiene tareas creadas.</p>
+            </div>
 
-    <?php if (empty($tareas)): ?>
+        <?php else: ?>
 
-        <p>Este objetivo todavía no tiene tareas creadas.</p>
+            <div class="row g-4">
 
-    <?php else: ?>
+                <?php foreach ($tareas as $tarea): ?>
 
-        <?php foreach ($tareas as $tarea): ?>
+                    <div class="col-md-4">
+                        <article class="tarjeta-tarea h-100">
 
-            <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 10px;">
+                            <h3><?php echo htmlspecialchars($tarea["titulo"]); ?></h3>
 
-                <h3><?php echo htmlspecialchars($tarea["titulo"]); ?></h3>
+                            <p class="mb-3">
+                                <?php echo nl2br(htmlspecialchars($tarea["descripcion"])); ?>
+                            </p>
 
-                <p>
-                    <?php echo nl2br(htmlspecialchars($tarea["descripcion"])); ?>
-                </p>
+                            <p>
+                                <span class="dato-mini"><?php echo htmlspecialchars($tarea["estado"]); ?></span>
+                                <span class="dato-mini"><?php echo htmlspecialchars($tarea["prioridad"]); ?></span>
+                                <span class="dato-mini">
+                                    <?php echo htmlspecialchars($tarea["fecha_limite"] ?? "Sin fecha"); ?>
+                                </span>
+                            </p>
 
-                <p>
-                    <strong>Fecha límite:</strong>
-                    <?php echo htmlspecialchars($tarea["fecha_limite"] ?? "Sin fecha"); ?>
-                </p>
+                            <div class="d-flex flex-wrap gap-2 mt-3">
+                                <a href="tarea_detalle.php?id_tarea=<?php echo $tarea["id_tarea"]; ?>" class="btn btn-sm btn-organica">
+                                    Entrar
+                                </a>
 
-                <p>
-                    <strong>Prioridad:</strong>
-                    <?php echo htmlspecialchars($tarea["prioridad"]); ?>
-                </p>
+                                <a href="tareas.php?id_objetivo=<?php echo $idObjetivo; ?>&cambiar_estado=<?php echo $tarea["id_tarea"]; ?>" class="btn btn-sm btn-organica-outline">
+                                    Cambiar estado
+                                </a>
 
-                <p>
-                    <strong>Estado:</strong>
-                    <?php echo htmlspecialchars($tarea["estado"]); ?>
-                </p>
+                                <a href="tareas.php?id_objetivo=<?php echo $idObjetivo; ?>&eliminar=<?php echo $tarea["id_tarea"]; ?>"
+                                   class="btn btn-sm btn-outline-danger"
+                                   onclick="return confirm('¿Seguro que quieres eliminar esta tarea?');">
+                                    Eliminar
+                                </a>
+                            </div>
 
-                <p>
-                    <a href="tarea_detalle.php?id_tarea=<?php echo $tarea["id_tarea"]; ?>">
-                        Entrar a la tarea
-                    </a>
-                    |
-                    <a href="tareas.php?id_objetivo=<?php echo $idObjetivo; ?>&cambiar_estado=<?php echo $tarea["id_tarea"]; ?>">
-                        Cambiar estado
-                    </a>
-                    |
-                    <a href="tareas.php?id_objetivo=<?php echo $idObjetivo; ?>&eliminar=<?php echo $tarea["id_tarea"]; ?>"
-                       onclick="return confirm('¿Seguro que quieres eliminar esta tarea?');">
-                        Eliminar
-                    </a>
-                </p>
+                        </article>
+                    </div>
+
+                <?php endforeach; ?>
 
             </div>
 
-        <?php endforeach; ?>
+        <?php endif; ?>
 
-    <?php endif; ?>
+    </section>
 
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
-
 </html>

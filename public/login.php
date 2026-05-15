@@ -40,49 +40,65 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Login - Organica</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="../assets/css/style.css">link rel="stylesheet" href="../assets/css/style.css">
-
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 
 <body>
 
-    <h1>Iniciar sesión</h1>
+<main class="container py-5">
 
-    <?php if (isset($_GET["registro"]) && $_GET["registro"] === "ok"): ?>
-        <p style="color: green;">Registro completado correctamente. Ya puedes iniciar sesión.</p>
-    <?php endif; ?>
+    <section class="hero-corcho mx-auto" style="max-width: 650px;">
+        <div class="hero-papel">
+            <div class="text-center mb-4">
+                <span class="logo-esponja mb-3"></span>
+                <h1>Iniciar sesión</h1>
+                <p class="texto-bienvenida mx-auto">
+                    Accede a tu espacio personal de organización.
+                </p>
+            </div>
 
-    <?php if (!empty($mensaje)): ?>
-        <p style="color: red;"><?php echo htmlspecialchars($mensaje); ?></p>
-    <?php endif; ?>
+            <?php if (isset($_GET["registro"]) && $_GET["registro"] === "ok"): ?>
+                <p class="alert alert-success">Registro completado correctamente. Ya puedes iniciar sesión.</p>
+            <?php endif; ?>
 
-    <form method="POST" action="">
+            <?php if (!empty($mensaje)): ?>
+                <p class="alert alert-danger"><?php echo htmlspecialchars($mensaje); ?></p>
+            <?php endif; ?>
 
-        <label for="email">Correo electrónico:</label><br>
-        <input type="email" id="email" name="email"><br><br>
+            <form method="POST" action="">
 
-        <label for="password">Contraseña:</label><br>
-        <input type="password" id="password" name="password"><br><br>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Correo electrónico:</label>
+                    <input type="email" id="email" name="email" class="form-control">
+                </div>
 
-        <button type="submit">Entrar</button>
+                <div class="mb-4">
+                    <label for="password" class="form-label">Contraseña:</label>
+                    <input type="password" id="password" name="password" class="form-control">
+                </div>
 
-    </form>
+                <button type="submit" class="btn btn-organica w-100">
+                    Entrar
+                </button>
 
-    <p>¿No tienes cuenta? <a href="registro.php">Crear cuenta</a></p>
-    <p><a href="index.php">Volver a la página principal</a></p>
- 
+            </form>
 
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+            <div class="text-center mt-4">
+                <p>¿No tienes cuenta? <a href="registro.php">Crear cuenta</a></p>
+                <p><a href="index.php">Volver a la página principal</a></p>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
-
 </html>

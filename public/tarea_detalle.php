@@ -216,287 +216,316 @@ $sesionesPomodoro = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Detalle de tarea - Organica</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="../assets/css/style.css">link rel="stylesheet" href="../assets/css/style.css">
-
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 
 <body>
 
-    <nav>
-        <nav>
-        <a href="dashboard.php">Panel principal</a> |
-        <a href="objetivos.php">Mis objetivos</a> |
-        <a href="calendario.php">Calendario</a> |
-        <a href="estadisticas.php">Estadísticas</a> |
-        <a href="tareas.php?id_objetivo=<?php echo $idObjetivo; ?>">Volver a tareas</a> |
-        <a href="logout.php">Cerrar sesión</a>
-</nav>
-    </nav>
+<nav class="navbar navbar-expand-lg organica-navbar">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="dashboard.php">
+            <span class="logo-esponja"></span>
+            <span>Organica</span>
+        </a>
 
-    <hr>
-
-    <h1><?php echo htmlspecialchars($tarea["titulo"]); ?></h1>
-
-    <p>
-        <strong>Objetivo:</strong>
-        <?php echo htmlspecialchars($tarea["titulo_objetivo"]); ?>
-    </p>
-
-    <p>
-        <strong>Estado actual:</strong>
-        <?php echo htmlspecialchars($tarea["estado"]); ?>
-    </p>
-
-    <p>
-        <strong>Prioridad:</strong>
-        <?php echo htmlspecialchars($tarea["prioridad"]); ?>
-    </p>
-
-    <p>
-        <strong>Fecha límite:</strong>
-        <?php echo htmlspecialchars($tarea["fecha_limite"] ?? "Sin fecha"); ?>
-    </p>
-
-    <p>
-        <?php echo nl2br(htmlspecialchars($tarea["descripcion"])); ?>
-    </p>
-
-    <hr>
-
-    <h2>Editar tarea</h2>
-
-    <?php if (!empty($mensajeTarea)): ?>
-        <p style="color: red;"><?php echo htmlspecialchars($mensajeTarea); ?></p>
-    <?php endif; ?>
-
-    <form method="POST" action="">
-
-        <label for="titulo">Título:</label><br>
-        <input 
-            type="text" 
-            id="titulo" 
-            name="titulo" 
-            value="<?php echo htmlspecialchars($tarea["titulo"]); ?>"
-        ><br><br>
-
-        <label for="descripcion">Descripción:</label><br>
-        <textarea 
-            id="descripcion" 
-            name="descripcion" 
-            rows="4" 
-            cols="50"
-        ><?php echo htmlspecialchars($tarea["descripcion"]); ?></textarea><br><br>
-
-        <label for="fecha_limite">Fecha límite:</label><br>
-        <input 
-            type="date" 
-            id="fecha_limite" 
-            name="fecha_limite" 
-            value="<?php echo htmlspecialchars($tarea["fecha_limite"] ?? ""); ?>"
-        ><br><br>
-
-        <label for="prioridad">Prioridad:</label><br>
-        <select id="prioridad" name="prioridad">
-            <option value="baja" <?php if ($tarea["prioridad"] === "baja") echo "selected"; ?>>
-                Baja
-            </option>
-            <option value="media" <?php if ($tarea["prioridad"] === "media") echo "selected"; ?>>
-                Media
-            </option>
-            <option value="alta" <?php if ($tarea["prioridad"] === "alta") echo "selected"; ?>>
-                Alta
-            </option>
-        </select><br><br>
-
-        <label for="estado">Estado:</label><br>
-        <select id="estado" name="estado">
-            <option value="pendiente" <?php if ($tarea["estado"] === "pendiente") echo "selected"; ?>>
-                Pendiente
-            </option>
-            <option value="completada" <?php if ($tarea["estado"] === "completada") echo "selected"; ?>>
-                Completada
-            </option>
-        </select><br><br>
-
-        <button type="submit" name="actualizar_tarea">
-            Guardar cambios
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal">
+            <span class="navbar-toggler-icon"></span>
         </button>
 
-    </form>
+        <div class="collapse navbar-collapse" id="menuPrincipal">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-lg-3">
+                <li class="nav-item"><a class="nav-link" href="dashboard.php">Panel principal</a></li>
+                <li class="nav-item"><a class="nav-link" href="objetivos.php">Mis objetivos</a></li>
+                <li class="nav-item"><a class="nav-link" href="calendario.php">Calendario</a></li>
+                <li class="nav-item"><a class="nav-link" href="estadisticas.php">Estadísticas</a></li>
+                <li class="nav-item"><a class="nav-link" href="tareas.php?id_objetivo=<?php echo $idObjetivo; ?>">Volver a tareas</a></li>
+                <li class="nav-item"><a class="nav-link cerrar-sesion" href="logout.php">Cerrar sesión</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
-    <hr>
+<main class="container py-5">
 
-    <h2>Subtareas</h2>
+    <section class="hero-corcho mb-5">
+        <div class="hero-papel">
+            <span class="etiqueta-seccion">Detalle de tarea</span>
 
-    <?php if (!empty($mensajeSubtarea)): ?>
-        <p style="color: red;"><?php echo htmlspecialchars($mensajeSubtarea); ?></p>
-    <?php endif; ?>
+            <h1><?php echo htmlspecialchars($tarea["titulo"]); ?></h1>
 
-<form method="POST" action="">
-    <label for="titulo_subtarea">Nueva subtarea:</label><br>
-    <input type="text" id="titulo_subtarea" name="titulo_subtarea">
-
-    <button type="submit" name="crear_subtarea">
-        Añadir subtarea
-    </button>
-</form>
-
-<br>
-
-<?php if (empty($subtareas)): ?>
-
-    <p>Esta tarea todavía no tiene subtareas.</p>
-
-<?php else: ?>
-
-    <ul>
-        <?php foreach ($subtareas as $subtarea): ?>
-
-            <li>
-                <?php echo htmlspecialchars($subtarea["titulo"]); ?>
-
-                - Estado:
-                <strong><?php echo htmlspecialchars($subtarea["estado"]); ?></strong>
-
-                |
-                <a href="tarea_detalle.php?id_tarea=<?php echo $idTarea; ?>&cambiar_subtarea=<?php echo $subtarea["id_subtarea"]; ?>">
-                    Cambiar estado
-                </a>
-
-                |
-                <a href="tarea_detalle.php?id_tarea=<?php echo $idTarea; ?>&eliminar_subtarea=<?php echo $subtarea["id_subtarea"]; ?>"
-                   onclick="return confirm('¿Seguro que quieres eliminar esta subtarea?');">
-                    Eliminar
-                </a>
-            </li>
-
-        <?php endforeach; ?>
-    </ul>
-
-<?php endif; ?>
-
-    <h2>Notas</h2>
-
-    <?php if (!empty($mensajeNota)): ?>
-        <p style="color: red;"><?php echo htmlspecialchars($mensajeNota); ?></p>
-    <?php endif; ?>
-
-<form method="POST" action="">
-    <label for="contenido_nota">Nueva nota:</label><br>
-    <textarea 
-        id="contenido_nota" 
-        name="contenido_nota" 
-        rows="3" 
-        cols="50"
-    ></textarea><br><br>
-
-    <button type="submit" name="crear_nota">
-        Añadir nota
-    </button>
-</form>
-
-<br>
-
-<?php if (empty($notas)): ?>
-
-    <p>Esta tarea todavía no tiene notas.</p>
-
-<?php else: ?>
-
-    <?php foreach ($notas as $nota): ?>
-
-        <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
-
-            <p>
-                <?php echo nl2br(htmlspecialchars($nota["contenido"])); ?>
+            <p class="texto-bienvenida">
+                Objetivo: <strong><?php echo htmlspecialchars($tarea["titulo_objetivo"]); ?></strong>
             </p>
 
-            <small>
-                Creada el:
-                <?php echo htmlspecialchars($nota["fecha_creacion"]); ?>
-            </small>
+            <div class="mt-4">
+                <span class="dato-mini"><?php echo htmlspecialchars($tarea["estado"]); ?></span>
+                <span class="dato-mini"><?php echo htmlspecialchars($tarea["prioridad"]); ?></span>
+                <span class="dato-mini">
+                    Fecha límite:
+                    <?php echo htmlspecialchars($tarea["fecha_limite"] ?? "Sin fecha"); ?>
+                </span>
+            </div>
 
-            <p>
-                <a href="tarea_detalle.php?id_tarea=<?php echo $idTarea; ?>&eliminar_nota=<?php echo $nota["id_nota"]; ?>"
-                   onclick="return confirm('¿Seguro que quieres eliminar esta nota?');">
-                    Eliminar nota
-                </a>
+            <p class="mt-4">
+                <?php echo nl2br(htmlspecialchars($tarea["descripcion"])); ?>
             </p>
+        </div>
+    </section>
 
+    <section class="bloque-papel mb-5">
+        <h2 class="titulo-seccion">Editar tarea</h2>
+
+        <?php if (!empty($mensajeTarea)): ?>
+            <p class="alert alert-danger"><?php echo htmlspecialchars($mensajeTarea); ?></p>
+        <?php endif; ?>
+
+        <form method="POST" action="">
+
+            <div class="mb-3">
+                <label for="titulo" class="form-label">Título:</label>
+                <input type="text" id="titulo" name="titulo" class="form-control"
+                       value="<?php echo htmlspecialchars($tarea["titulo"]); ?>">
+            </div>
+
+            <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción:</label>
+                <textarea id="descripcion" name="descripcion" rows="4" class="form-control"><?php echo htmlspecialchars($tarea["descripcion"]); ?></textarea>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="fecha_limite" class="form-label">Fecha límite:</label>
+                    <input type="date" id="fecha_limite" name="fecha_limite" class="form-control"
+                           value="<?php echo htmlspecialchars($tarea["fecha_limite"] ?? ""); ?>">
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label for="prioridad" class="form-label">Prioridad:</label>
+                    <select id="prioridad" name="prioridad" class="form-select">
+                        <option value="baja" <?php if ($tarea["prioridad"] === "baja") echo "selected"; ?>>
+                            Baja
+                        </option>
+                        <option value="media" <?php if ($tarea["prioridad"] === "media") echo "selected"; ?>>
+                            Media
+                        </option>
+                        <option value="alta" <?php if ($tarea["prioridad"] === "alta") echo "selected"; ?>>
+                            Alta
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label for="estado" class="form-label">Estado:</label>
+                    <select id="estado" name="estado" class="form-select">
+                        <option value="pendiente" <?php if ($tarea["estado"] === "pendiente") echo "selected"; ?>>
+                            Pendiente
+                        </option>
+                        <option value="completada" <?php if ($tarea["estado"] === "completada") echo "selected"; ?>>
+                            Completada
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" name="actualizar_tarea" class="btn btn-organica">
+                Guardar cambios
+            </button>
+
+        </form>
+    </section>
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-lg-6">
+            <section class="bloque-papel h-100">
+                <h2 class="titulo-seccion">Subtareas</h2>
+
+                <?php if (!empty($mensajeSubtarea)): ?>
+                    <p class="alert alert-danger"><?php echo htmlspecialchars($mensajeSubtarea); ?></p>
+                <?php endif; ?>
+
+                <form method="POST" action="" class="mb-4">
+                    <label for="titulo_subtarea" class="form-label">Nueva subtarea:</label>
+
+                    <div class="d-flex gap-2">
+                        <input type="text" id="titulo_subtarea" name="titulo_subtarea" class="form-control">
+
+                        <button type="submit" name="crear_subtarea" class="btn btn-organica">
+                            Añadir
+                        </button>
+                    </div>
+                </form>
+
+                <?php if (empty($subtareas)): ?>
+
+                    <p>Esta tarea todavía no tiene subtareas.</p>
+
+                <?php else: ?>
+
+                    <ul class="list-group">
+
+                        <?php foreach ($subtareas as $subtarea): ?>
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong><?php echo htmlspecialchars($subtarea["titulo"]); ?></strong>
+                                    <br>
+                                    <span class="dato-mini"><?php echo htmlspecialchars($subtarea["estado"]); ?></span>
+                                </div>
+
+                                <div class="d-flex gap-2">
+                                    <a href="tarea_detalle.php?id_tarea=<?php echo $idTarea; ?>&cambiar_subtarea=<?php echo $subtarea["id_subtarea"]; ?>" class="btn btn-sm btn-organica-outline">
+                                        Cambiar
+                                    </a>
+
+                                    <a href="tarea_detalle.php?id_tarea=<?php echo $idTarea; ?>&eliminar_subtarea=<?php echo $subtarea["id_subtarea"]; ?>"
+                                       class="btn btn-sm btn-outline-danger"
+                                       onclick="return confirm('¿Seguro que quieres eliminar esta subtarea?');">
+                                        Eliminar
+                                    </a>
+                                </div>
+                            </li>
+
+                        <?php endforeach; ?>
+
+                    </ul>
+
+                <?php endif; ?>
+            </section>
         </div>
 
-    <?php endforeach; ?>
+        <div class="col-lg-6">
+            <section class="bloque-papel h-100">
+                <h2 class="titulo-seccion">Notas</h2>
 
-<?php endif; ?>
+                <?php if (!empty($mensajeNota)): ?>
+                    <p class="alert alert-danger"><?php echo htmlspecialchars($mensajeNota); ?></p>
+                <?php endif; ?>
 
-    <h2 id="pomodoro">Pomodoro</h2>
+                <form method="POST" action="" class="mb-4">
+                    <label for="contenido_nota" class="form-label">Nueva nota:</label>
 
-    <?php if (!empty($mensajePomodoro)): ?>
-        <p style="color: red;"><?php echo htmlspecialchars($mensajePomodoro); ?></p>
-    <?php endif; ?>
+                    <textarea id="contenido_nota" name="contenido_nota" rows="3" class="form-control mb-3"></textarea>
 
+                    <button type="submit" name="crear_nota" class="btn btn-organica">
+                        Añadir nota
+                    </button>
+                </form>
 
-    <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px;">
-    <p id="pantalla-tiempo" style="font-size: 32px; font-weight: bold;">
-        25:00
-    </p>
+                <?php if (empty($notas)): ?>
 
-    <button type="button" id="btn-iniciar">Iniciar</button>
-    <button type="button" id="btn-pausar">Pausar</button>
-    <button type="button" id="btn-reiniciar">Reiniciar</button>
+                    <p>Esta tarea todavía no tiene notas.</p>
 
-    <form method="POST" action="" id="form_pomodoro" style="margin-top: 15px;">
-        <input type="hidden" id="duracion_pomodoro" name="duracion_pomodoro" value="0">
+                <?php else: ?>
 
-        <button type="submit" name="guardar_pomodoro">
-            Guardar sesión Pomodoro
-        </button>
-    </form>
-</div>
+                    <div class="row g-3">
 
-<h3>Sesiones Pomodoro registradas</h3>
+                        <?php foreach ($notas as $nota): ?>
 
-<?php if (empty($sesionesPomodoro)): ?>
+                            <div class="col-md-6">
+                                <div class="nota-postit h-100">
+                                    <p>
+                                        <?php echo nl2br(htmlspecialchars($nota["contenido"])); ?>
+                                    </p>
 
-    <p>Todavía no hay sesiones Pomodoro registradas para esta tarea.</p>
+                                    <small>
+                                        Creada el:
+                                        <?php echo htmlspecialchars($nota["fecha_creacion"]); ?>
+                                    </small>
 
-<?php else: ?>
+                                    <p class="mt-3">
+                                        <a href="tarea_detalle.php?id_tarea=<?php echo $idTarea; ?>&eliminar_nota=<?php echo $nota["id_nota"]; ?>"
+                                           onclick="return confirm('¿Seguro que quieres eliminar esta nota?');">
+                                            Eliminar nota
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
 
-    <ul>
-        <?php foreach ($sesionesPomodoro as $sesion): ?>
-            <li>
-                <?php echo htmlspecialchars($sesion["duracion_minutos"]); ?> minutos
-                -
-                <?php echo htmlspecialchars($sesion["fecha_inicio"]); ?>
-            </li>
-        <?php endforeach; ?>
-    </ul>
+                        <?php endforeach; ?>
 
-<?php endif; ?>
+                    </div>
 
-    <hr>
+                <?php endif; ?>
+            </section>
+        </div>
 
-    <h2>Zona peligrosa</h2>
+    </div>
 
-    <form method="POST" action="" onsubmit="return confirm('¿Seguro que quieres eliminar esta tarea?');">
-        <button type="submit" name="eliminar_tarea">
-            Eliminar tarea
-        </button>
-    </form>
+    <section class="pomodoro-panel mb-5" id="pomodoro">
+        <h2 class="titulo-seccion">Pomodoro</h2>
 
+        <?php if (!empty($mensajePomodoro)): ?>
+            <p class="alert alert-danger"><?php echo htmlspecialchars($mensajePomodoro); ?></p>
+        <?php endif; ?>
 
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-            <script src="../assets/js/pomodoro.js"></script>
+        <p id="pantalla-tiempo" class="pantalla-pomodoro">
+            25:00
+        </p>
+
+        <div class="d-flex flex-wrap gap-2 mb-3">
+            <button type="button" id="btn-iniciar" class="btn btn-organica">Iniciar</button>
+            <button type="button" id="btn-pausar" class="btn btn-organica-outline">Pausar</button>
+            <button type="button" id="btn-reiniciar" class="btn btn-outline-secondary">Reiniciar</button>
+        </div>
+
+        <form method="POST" action="" id="form_pomodoro" class="mb-4">
+            <input type="hidden" id="duracion_pomodoro" name="duracion_pomodoro" value="0">
+
+            <button type="submit" name="guardar_pomodoro" class="btn btn-organica">
+                Guardar sesión Pomodoro
+            </button>
+        </form>
+
+        <h3>Sesiones Pomodoro registradas</h3>
+
+        <?php if (empty($sesionesPomodoro)): ?>
+
+            <p>Todavía no hay sesiones Pomodoro registradas para esta tarea.</p>
+
+        <?php else: ?>
+
+            <ul class="list-group">
+
+                <?php foreach ($sesionesPomodoro as $sesion): ?>
+
+                    <li class="list-group-item">
+                        <?php echo htmlspecialchars($sesion["duracion_minutos"]); ?> minutos
+                        -
+                        <?php echo htmlspecialchars($sesion["fecha_inicio"]); ?>
+                    </li>
+
+                <?php endforeach; ?>
+
+            </ul>
+
+        <?php endif; ?>
+    </section>
+
+    <section class="bloque-papel mb-5">
+        <h2 class="titulo-seccion">Eliminar tarea</h2>
+
+        <p class="mb-3">
+            Esta acción eliminará la tarea y sus subtareas, notas y sesiones asociadas.
+        </p>
+
+        <form method="POST" action="" onsubmit="return confirm('¿Seguro que quieres eliminar esta tarea?');">
+            <button type="submit" name="eliminar_tarea" class="btn btn-outline-danger">
+                Eliminar tarea
+            </button>
+        </form>
+    </section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/pomodoro.js"></script>
+
 </body>
-
 </html>
