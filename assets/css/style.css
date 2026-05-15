@@ -791,3 +791,106 @@ label {
         display: none;
     }
 }
+
+/* ==========================
+   AJUSTES GENERALES DE FONDO
+========================== */
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background:
+        radial-gradient(circle at top left, rgba(92, 129, 85, 0.07), transparent 320px),
+        radial-gradient(circle at bottom right, rgba(201, 167, 123, 0.10), transparent 360px),
+        var(--color-fondo);
+}
+
+main {
+    flex: 1;
+}
+
+/* Páginas de acceso centradas */
+body.pagina-acceso main {
+    min-height: calc(100vh - 120px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Evita que el login/registro se quede demasiado arriba */
+body.pagina-acceso .hero-corcho {
+    width: 100%;
+}
+
+/* ==========================
+   DECORACIÓN LATERAL SUAVE
+========================== */
+
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: -1;
+}
+
+body::before {
+    left: -55px;
+    bottom: 90px;
+    background:
+        radial-gradient(circle at 35% 35%, var(--color-verde-medio) 0 12%, transparent 13%),
+        radial-gradient(circle at 65% 45%, var(--color-verde) 0 10%, transparent 11%),
+        radial-gradient(circle at 45% 70%, var(--color-salvia) 0 18%, transparent 19%);
+}
+
+body::after {
+    right: -55px;
+    top: 120px;
+    background:
+        radial-gradient(circle at 40% 35%, var(--color-corcho) 0 14%, transparent 15%),
+        radial-gradient(circle at 65% 55%, var(--color-verde-medio) 0 10%, transparent 11%),
+        radial-gradient(circle at 45% 75%, var(--color-salvia) 0 18%, transparent 19%);
+}
+
+@media (max-width: 768px) {
+    body::before,
+    body::after {
+        display: none;
+    }
+}
+
+/* ==========================
+   FOOTER
+========================== */
+
+.footer-organica {
+    background-color: #263327;
+    color: #f7f1e3;
+    padding: 22px 0;
+    margin-top: 50px;
+}
+
+.footer-organica p {
+    margin: 0;
+    color: #f7f1e3;
+    font-size: 0.95rem;
+}
+
+.footer-organica a {
+    color: #dfead7;
+    font-weight: 700;
+}
+
+.footer-organica a:hover {
+    color: white;
+}
+
+.footer-organica .footer-mini {
+    color: #c9d6c2;
+    font-size: 0.85rem;
+}

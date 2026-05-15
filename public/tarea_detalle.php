@@ -524,6 +524,20 @@ $sesionesPomodoro = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 </main>
 
+<footer class="footer-organica">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+        <div>
+            <p><strong>Organica</strong> · Proyecto final DAW</p>
+            <p class="footer-mini">Aplicación web de productividad personal basada en objetivos, tareas y Pomodoro.</p>
+        </div>
+
+        <div class="text-md-end">
+            <p class="footer-mini">Desarrollado por Jose Aurelio Rodríguez Belmonte</p>
+            <p class="footer-mini">© 2026 Organica</p>
+        </div>
+    </div>
+</footer>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../assets/js/pomodoro.js"></script>
 
