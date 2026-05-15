@@ -894,3 +894,28 @@ body::after {
     color: #c9d6c2;
     font-size: 0.85rem;
 }
+
+/* ==========================
+   LOGO DEFINITIVO DE ORGANICA
+========================== */
+
+.logo-esponja {
+    width: 62px;
+    height: 62px;
+    display: inline-block;
+    flex-shrink: 0;
+    background-image: url("../img/logo-organica.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.logo-esponja::before,
+.logo-esponja::after {
+    content: none;
+    display: none;
+}
